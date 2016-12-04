@@ -1,0 +1,12 @@
+name: STIG_RHEL7
+title: STIG for Redhat Enterprise Linux 7
+supports:
+  - os-family: redhat
+maintainer: Paul Czarkowski
+copyright: Paul Czarkowski
+copyright_email: username.taken@gmail.com
+license: Apache 2
+summary: |
+  An InSpec Compliance for Redhat Enterprise Linux 7
+  part of the [inspec-stig](https://github.com/inspec-stigs) family.
+version: 0.1.0
