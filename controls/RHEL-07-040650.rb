@@ -34,8 +34,11 @@ Check the mode of the private host key files under /etc/ssh file with the follow
 If any file has a mode more permissive than “0600”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040650
-  describe file('') do
-    it { should match // }
+  priv_keys = command('find / -name "*ssh_host*key"').stdout.split("\n")
+  for priv_key in priv_keys do
+    describe file(priv_key) do
+      its('mode') { should cmp '0600' }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040650
 

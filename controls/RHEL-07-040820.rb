@@ -60,8 +60,35 @@ If “firewalld” and “tcpwrappers” are not installed, configured, and acti
 If “firewalld” is active and is not configured to grant access to specific hosts and “tcpwrappers” is not configured to grant or deny access to specific hosts, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040820
-  describe file('') do
-    it { should match // }
+  describe package('firewalld') do
+    it { should be_installed }
+  end
+
+  describe service('firewalld') do
+    it { should be_running }
+    it { should be_enabled }
+  end
+
+  describe package('tcp_wrappers') do
+    it { should be_installed }
+  end
+
+  describe package('tcp_wrappers-libs') do
+    it { should be_installed }
+  end
+
+  describe.one do
+    describe command('firewall-cmd --list-all') do
+      its('stdout') { should match /source\s+address=".*"/ }
+    end
+
+    describe file('/etc/hosts.allow') do
+      its('content') { should match /^(?!#).*$/ }
+    end
+
+    describe file('/etc/hosts.deny') do
+      its('content') { should match /^(?!#).*$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040820
 

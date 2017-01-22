@@ -34,8 +34,26 @@ Note: The example will be for the “smithj” user, who has a home directory of
 If any file that sets a local interactive user’s environment variables to override the system is not owned by the home directory owner or root, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020840
-  describe file('') do
-    it { should match // }
+  interactive_users = command('grep -E "\/usr\/bin\/(ash|csh|sh|ksh|tcsh|sash|zsh|dash|screen|bash|rbash)|\/bin\/(ash|csh|sh|ksh|tcsh|sash|zsh|dash|screen|bash|rbash)" /etc/passwd | cut -d: -f1,6').stdout.split("\n")
+  interactive_users.map! { |interactive_user| { "username" => interactive_user.split(":")[0], "home" => interactive_user.split(":")[1] } }
+
+  for interactive_user in interactive_users do
+    for file in ['.bash_profile', '.bashrc', '.profile'] do
+      file_exists = file("#{interactive_user['home']}/#{file}").file?
+      if file_exists
+        describe.one do
+          describe command("find #{interactive_user['home']}/#{file} -user #{interactive_user['username']}") do
+            its('stdout') { should match /^(\/.+)+\/\..+$/ }
+            its('exit_status') { should eq 0 }
+          end
+
+          describe command("find #{interactive_user['home']}/#{file} -user root") do
+            its('stdout') { should match /^(\/.+)+\/\..+$/ }
+            its('exit_status') { should eq 0 }
+          end
+        end
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-020840
 

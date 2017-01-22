@@ -30,7 +30,7 @@ If network interfaces are found on the system in promiscuous mode and their use 
 
 # START_DESCRIBE RHEL-07-040470
   describe command('ip link | grep -i promisc') do
-    its('stdout') { should match // }
+    its('stdout') { should match /^$/ }
     its('exit_status') { should eq 1 }
   end
 # STOP_DESCRIBE RHEL-07-040470

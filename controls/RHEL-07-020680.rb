@@ -33,8 +33,14 @@ Check the owner of all files and directories in a local interactive user’s hom
 If any files are found with an owner different than the home directory user, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020680
-  describe file('') do
-    it { should match // }
+  interactive_users = command('grep -E "\/usr\/bin\/(ash|csh|sh|ksh|tcsh|sash|zsh|dash|screen|bash|rbash)|\/bin\/(ash|csh|sh|ksh|tcsh|sash|zsh|dash|screen|bash|rbash)" /etc/passwd | cut -d: -f1,6').stdout.split("\n")
+  interactive_users.map! { |interactive_user| { "username" => interactive_user.split(":")[0], "home" => interactive_user.split(":")[1] } }
+
+  for interactive_user in interactive_users do
+    describe command("find #{interactive_user['home']} ! -user #{interactive_user['username']}") do
+      its('stdout') { should match /^$/ }
+      its('exit_status') { should eq 0 }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020680
 

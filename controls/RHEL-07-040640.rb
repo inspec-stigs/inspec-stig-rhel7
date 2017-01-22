@@ -42,8 +42,11 @@ Check the mode of the public host key files under /etc/ssh file with the followi
 If any file has a mode more permissive than “0644”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040640
-  describe file('') do
-    it { should match // }
+  pub_keys = command('find / -name "*.pub"').stdout.split("\n")
+  for pub_key in pub_keys do
+    describe file(pub_key) do
+      its('mode') { should cmp '0644' }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040640
 

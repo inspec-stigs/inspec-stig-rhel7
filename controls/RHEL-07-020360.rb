@@ -28,7 +28,7 @@ If any files on the system do not have an assigned owner, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020360
   describe command('find / -xdev -nouser -fstype local') do
-    its('stdout') { should match // }
+    its('stdout') { should match /^$/ }
     its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-020360
