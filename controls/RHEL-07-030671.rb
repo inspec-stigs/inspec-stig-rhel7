@@ -41,8 +41,9 @@ If the command does not return the following output (appropriate to the architec
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030671
-  describe file('') do
-    it { should match // }
+  describe command('auditctl -l') do
+    its('stdout') { should match /^-a always,exit -F arch=b32  -S delete_module -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 -F key=module-change/ }
+    its('stdout') { should match /^-a always,exit -F arch=b64  -S delete_module -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 -F key=module-change/ }
   end
 # STOP_DESCRIBE RHEL-07-030671
 

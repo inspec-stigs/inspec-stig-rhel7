@@ -31,8 +31,8 @@ sync:x:5:0:sync:/sbin:/bin/sync
 If unnecessary default accounts such as games or ftp exist in the “/etc/passwd” file, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010490
-  describe file('') do
-    it { should match // }
+  describe file('/etc/passwd') do
+    its('content') { should_not match /^(games|ftp)/ }
   end
 # STOP_DESCRIBE RHEL-07-010490
 

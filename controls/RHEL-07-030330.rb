@@ -28,8 +28,8 @@ remote_server = 10.0.21.1
 If a remote server is not configured, or the line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030330
-  describe file('') do
-    it { should match // }
+  describe file('/etc/audisp/audisp-remote.conf') do
+    its('content'){ should match /^remote_server\s*=\s*(\w|\d|\.|-)+$/ }
   end
 # STOP_DESCRIBE RHEL-07-030330
 

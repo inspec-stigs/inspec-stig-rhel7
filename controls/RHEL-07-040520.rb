@@ -35,8 +35,12 @@ server_args = -s /var/lib/tftpboot
 If the “server_args” line does not have a -s option and the directory /var/lib/tftpboot, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040520
-  describe file('') do
-    it { should match // }
+  is_tftp_installed = package('tftp').installed?
+  if is_tftp_installed
+    describe file('/etc/xinetd.d/tftp') do
+      its('content') { should match /^server_args\s*=.*-s.*$/ }
+      its('content') { should match /^server_args\s*=.*\/var\/lib\/tftpboot.*$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040520
 

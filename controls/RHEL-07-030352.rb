@@ -30,8 +30,8 @@ action_mail_acct = root
 If the value of the “action_mail_acct” keyword is not set to “root” and other accounts for security personnel, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030352
-  describe file('') do
-    it { should match // }
+  describe auditd_conf do
+    its('action_mail_acct') { should eq 'root' }
   end
 # STOP_DESCRIBE RHEL-07-030352
 

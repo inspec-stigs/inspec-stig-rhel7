@@ -31,9 +31,8 @@ If the line containing the pam_unix.so line does not have the “remember” mod
 
 # START_DESCRIBE RHEL-07-010240
   describe file('/etc/pam.d/system-auth') do
-    its('content') { should match /^password\s+sufficient\s+pam_unix\.so.+*?remember=([5-9]|[1-9][0-9])/ }
+    its('content') { should match /^password\s+sufficient\s+pam_unix\.so.+??remember=([5-9]|[1-9][0-9])/ }
   end
 # STOP_DESCRIBE RHEL-07-010240
 
 end
-

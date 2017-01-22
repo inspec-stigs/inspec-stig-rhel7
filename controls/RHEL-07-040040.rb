@@ -68,8 +68,11 @@ use_pkcs11_module = cackey;
 If the module returned is not cackey or coolkey, or the line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040040
-  describe file('') do
-    it { should match // }
+  pam_pkcs11_conf_exists = file('/etc/pam_pkcs11/pam_pkcs11.conf').file?
+  if pam_pkcs11_conf_exists
+    describe file('/etc/pam_pkcs11/pam_pkcs11.conf') do
+      its('content') { should match /^use_pkcs11_module\s+=\s+cackey;$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040040
 

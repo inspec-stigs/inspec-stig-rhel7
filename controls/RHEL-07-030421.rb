@@ -32,15 +32,16 @@ Note: The output lines of the command are duplicated to cover both 32-bit and 64
 
 # grep -i open /etc/audit/rules.d/audit.rules
 
--a always,exit -F arch=b32 -S open -Fexit=-EPERM -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
+-a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
 
 -a always,exit -F arch=b64 -S  open -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030421
-  describe file('') do
-    it { should match // }
+  describe command('auditctl -l') do
+    its('stdout') { should match /^-a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 -F key=access/ }
+    its('stdout') { should match /^-a always,exit -F arch=b64 -S  open -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 -F key=access/ }
   end
 # STOP_DESCRIBE RHEL-07-030421
 

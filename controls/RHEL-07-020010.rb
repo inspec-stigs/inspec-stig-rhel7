@@ -27,8 +27,8 @@ Check to see if the “ypserve” package is installed with the following comman
 If the “ypserv” package is installed, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020010
-  describe file('') do
-    it { should match // }
+  describe package('ypserv') do
+    it { should_not be_installed }
   end
 # STOP_DESCRIBE RHEL-07-020010
 

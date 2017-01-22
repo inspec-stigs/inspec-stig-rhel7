@@ -37,8 +37,11 @@ Policy from config file:        targeted
 If the “Policy from config file”  not set to “targeted”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020211
-  describe file('') do
-    it { should match // }
+  describe command('sestatus') do
+    its('stdout') { should match /^SELinux status:\s+enabled$/ }
+    its('stdout') { should match /^Current mode:\s+enforcing$/ }
+    its('stdout') { should match /^Mode from config file:\s+enforcing$/ }
+    its('stdout') { should match /^Policy from config file:\s+targeted$/ }
   end
 # STOP_DESCRIBE RHEL-07-020211
 

@@ -28,8 +28,8 @@ net.ipv4.ip_forward=0
 If IP forwarding value is “1” and the system is hosting any application, database, or web servers, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040730
-  describe file('') do
-    it { should match // }
+  describe kernel_parameter('net.ipv4.ip_forward') do
+    its('value') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040730
 

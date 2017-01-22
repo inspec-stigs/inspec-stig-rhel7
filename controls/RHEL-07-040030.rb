@@ -49,8 +49,11 @@ If the file exists this in the configured directory is not a finding.
 If the system is not configured to use OCSP or crls, or the crls file is missing, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040030
-  describe file('') do
-    it { should match // }
+  pam_pkcs11_conf_exists = file('/etc/pam_pkcs11/pam_pkcs11.conf').file?
+  if pam_pkcs11_conf_exists
+    describe command('if [ `grep -c ocsp_on /etc/pam_pkcs11/pam_pkcs11.conf` -ge 3 ]; then exit 0; else exit 1; fi') do
+      its('exit_status') { should eq 0 }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040030
 

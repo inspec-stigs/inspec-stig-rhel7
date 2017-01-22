@@ -33,8 +33,11 @@ Pseudo-file systems, such as /proc, /sys, and tmpfs, are not required to use dis
 If any other partitions do not have a type of “crypto_LUKS”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020170
-  describe file('') do
-    it { should match // }
+  blkids = command('blkid').stdout.split("\n")
+  for blkid in blkids
+    describe command("echo '#{blkid}'") do
+      its('stdout') { should match /^.+TYPE="crypto_LUKS".*$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020170
 

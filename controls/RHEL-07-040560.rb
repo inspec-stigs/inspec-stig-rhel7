@@ -31,8 +31,8 @@ Ask the System Administrator (SA) if use of the X Windows system is an operation
 If the use of X Windows on the system is not documented with the Information System Security Manager (ISSM), this is a finding.'
 
 # START_DESCRIBE RHEL-07-040560
-  describe file('') do
-    it { should match // }
+  describe package('xorg-x11-server-common') do
+    it { should_not be_installed }
   end
 # STOP_DESCRIBE RHEL-07-040560
 

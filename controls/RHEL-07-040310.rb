@@ -30,8 +30,8 @@ PermitRootLogin no
 If the “PermitRootLogin” keyword is set to “yes”, is missing, or is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040310
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('PermitRootLogin') { should eq 'no' }
   end
 # STOP_DESCRIBE RHEL-07-040310
 

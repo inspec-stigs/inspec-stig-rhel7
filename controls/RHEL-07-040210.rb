@@ -42,8 +42,8 @@ If the file does not exist, this is a finding.
 If the option is set to “17” or is not set, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040210
-  describe file('') do
-    it { should match // }
+  describe file('/etc/ntp.conf') do
+    its('content') { should match /^maxpoll\s+10$/ }
   end
 # STOP_DESCRIBE RHEL-07-040210
 

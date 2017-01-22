@@ -33,8 +33,8 @@ Check for the following system calls being audited by performing the following c
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030522
-  describe file('') do
-    it { should match // }
+  describe command('auditctl -l') do
+    its('stdout') { should match /^-a always,exit -F path=\/usr\/bin\/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-priv_change/ }
   end
 # STOP_DESCRIBE RHEL-07-030522
 

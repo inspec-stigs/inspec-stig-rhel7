@@ -59,8 +59,12 @@ If the command does not return the following output, this is a finding.
 -w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification'
 
 # START_DESCRIBE RHEL-07-030710
-  describe file('') do
-    it { should match // }
+  describe command('auditctl -l') do
+    its('stdout') { should match /^-w \/etc\/group -p wa -k audit_rules_usergroup_modification/ }
+    its('stdout') { should match /^-w \/etc\/passwd -p wa -k audit_rules_usergroup_modification/ }
+    its('stdout') { should match /^-w \/etc\/gshadow -p wa -k audit_rules_usergroup_modification/ }
+    its('stdout') { should match /^-w \/etc\/shadow -p wa -k audit_rules_usergroup_modification/ }
+    its('stdout') { should match /^-w \/etc\/security\/opasswd -p wa -k audit_rules_usergroup_modification/ }
   end
 # STOP_DESCRIBE RHEL-07-030710
 

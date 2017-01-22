@@ -39,8 +39,9 @@ Note: The output lines of the command are duplicated to cover both 32-bit and 64
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030383
-  describe file('') do
-    it { should match // }
+  describe command('auditctl -l') do
+    its('stdout') { should match /^-a always,exit -F arch=b32 -S fchownat -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 key=perm_mod/ }
+    its('stdout') { should match /^-a always,exit -F arch=b64 -S fchownat -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 key=perm_mod/ }
   end
 # STOP_DESCRIBE RHEL-07-030383
 

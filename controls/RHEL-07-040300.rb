@@ -31,8 +31,13 @@ session     required      pam_lastlog.so showfailed silent
 If “pam_lastlog” is missing from “/etc/pam.d/postlogin” file, or the silent option is present on the line check for the “PrintLastLog” keyword in the sshd daemon configuration file, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040300
-  describe file('') do
-    it { should match // }
+  describe file('/etc/pam.d/postlogin') do
+    its('content') { should match /^session\s+required\s+pam_lastlog.so\s+.*showfailed.*$/ }
+    its('content') { should_not match /^session\s+required\s+pam_lastlog.so\s+.*silent.*$/ }
+  end
+
+  describe sshd_config do
+    its('PrintLastLog') { should_not eq 'silent' }
   end
 # STOP_DESCRIBE RHEL-07-040300
 

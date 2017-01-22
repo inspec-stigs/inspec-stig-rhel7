@@ -28,10 +28,9 @@ CREATE_HOME yes
 If the value for “CREATE_HOME” parameter is not set to "yes", the line is missing, or the line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020630
-  describe file('') do
-    it { should match // }
+  describe file('/etc/login.defs') do
+    its('content') { should match /^CREATE_HOME\s*yes$/ }
   end
 # STOP_DESCRIBE RHEL-07-020630
 
 end
-

@@ -35,8 +35,11 @@ ssl start_tls
 If the “ssl” option is not “start_tls”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040180
-  describe file('') do
-    it { should match // }
+  ldap_auth_enabled = command('grep -i USELDAPAUTH=yes /etc/sysconfig/authconfig').exit_status
+  if ldap_auth_enabled == 0
+    describe file('/etc/pam_ldap.conf') do
+      its('content') { should match /^ssl\s+start_tls$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040180
 

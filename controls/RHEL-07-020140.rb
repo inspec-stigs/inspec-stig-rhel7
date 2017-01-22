@@ -40,8 +40,9 @@ AIDE does not have a configuration that will send a notification, so the cron jo
 If the file integrity application does not notify designated personnel of changes, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020140
-  describe file('') do
-    it { should match // }
+  describe command('grep -r "aide --check" /etc/cron*') do
+    its('stdout') { should match /\/bin\/mail/ }
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-020140
 

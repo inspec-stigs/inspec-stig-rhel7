@@ -39,8 +39,8 @@ Typical update frequency may be overridden by information assurance vulnerabilit
 If the operating system is in non-compliance with the IAVM process, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020250
-  describe file('') do
-    it { should match // }
+  describe command('yum history') do
+    its('stdout') { should match /(update\s+-y|-y\s+update)/ }
   end
 # STOP_DESCRIBE RHEL-07-020250
 

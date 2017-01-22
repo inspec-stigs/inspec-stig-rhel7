@@ -28,8 +28,8 @@ If a separate entry for /var/log/audit does not exist, ask the System Administra
 If a separate file system/partition does not exist for the system audit data path, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021260
-  describe file('') do
-    it { should match // }
+  describe file('/etc/fstab') do
+    its('content') { should match /\/var\/log\/audit/ }
   end
 # STOP_DESCRIBE RHEL-07-021260
 

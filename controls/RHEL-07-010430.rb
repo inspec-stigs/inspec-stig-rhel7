@@ -35,8 +35,11 @@ AutomaticLoginEnable=false
 If the value of “AutomaticLoginEnable” is not set to “false”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010430
-  describe file('') do
-    it { should match // }
+  gdm_custom_file_exists = file('/etc/gdm/custom.conf').file?
+  if gdm_custom_file_exists
+    describe file('/etc/gdm/custom.conf') do
+      its('content') { should match /^AutomaticLoginEnable=false$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010430
 

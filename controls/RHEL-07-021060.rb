@@ -31,8 +31,10 @@ Note: The example is for a system that is configured to create users home direct
 If any local interactive user initialization files are found to have a umask statement that has a value less restrictive than “077”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021060
-  describe file('') do
-    it { should match // }
+  for file in ['.bash_profile', '.bashrc', '.profile'] do
+    describe command("grep -irE \"^umask\s+[0-6]{1,3}$\" /home/*/#{file}") do
+      its('exit_status') { should_not eq 0 }
+    end
   end
 # STOP_DESCRIBE RHEL-07-021060
 

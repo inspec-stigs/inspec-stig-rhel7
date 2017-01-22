@@ -29,8 +29,11 @@ Check the configuration of the /etc/sudoers and /etc/sudoers.d/* files with the 
 If any line is found with a "!authenticate" tag, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010381
-  describe file('') do
-    it { should match // }
+  sudoers_files = command('find /etc/sudoers* -type f').stdout.split("\n")
+  for sudoers_file in sudoers_files do
+    describe file(sudoers_file) do
+      its('content') { should_not match /!authenticate/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010381
 

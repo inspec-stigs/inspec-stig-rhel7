@@ -33,8 +33,9 @@ auth        [default=die]  pam_faillock.so authfail audit deny=3 even_deny_root 
 If the “fail_interval” setting is greater than 900 on both lines with the pam_faillock.so module name or is missing from a line, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010371
-  describe file('') do
-    it { should match // }
+  describe file('/etc/pam.d/password-auth') do
+    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth\s+silent\s+audit\s+deny=3\s+even_deny_root\s+fail_interval=(\d{1,2}|[0-8]\d{2}|900)$/ }
+    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail\s+audit\s+deny=3\s+even_deny_root\s+fail_interval=(\d{1,2}|[0-8]\d{2}|900)$/ }
   end
 # STOP_DESCRIBE RHEL-07-010371
 

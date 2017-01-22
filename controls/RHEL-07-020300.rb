@@ -25,8 +25,8 @@ Check that all referenced GIDs exist with the following command:
 If GIDs referenced in “/etc/passwd” file are returned as not defined in “/etc/group” file, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020300
-  describe file('') do
-    it { should match // }
+  describe command('pwck -r') do
+    its('stdout') { should_not match /^user\s+'.*':\s+no\s+group\s+.*$/ }
   end
 # STOP_DESCRIBE RHEL-07-020300
 

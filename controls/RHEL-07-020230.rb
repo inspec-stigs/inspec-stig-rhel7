@@ -32,8 +32,8 @@ UMASK  077
 If the value for the “UMASK” parameter is not “077”, or the “UMASK” parameter is missing or is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020230
-  describe file('') do
-    it { should match // }
+  describe file('/etc/login.defs') do
+    its('content') { should match /^UMASK\s+077$/ }
   end
 # STOP_DESCRIBE RHEL-07-020230
 

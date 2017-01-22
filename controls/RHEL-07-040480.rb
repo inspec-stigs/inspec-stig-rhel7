@@ -36,8 +36,18 @@ smtpd_client_restrictions = permit_mynetworks, reject
 If the “smtpd_client_restrictions” parameter contains any entries other than "permit_mynetworks" and "reject", this is a finding.'
 
 # START_DESCRIBE RHEL-07-040480
-  describe file('') do
-    it { should match // }
+  is_postfix_installed = package('postfix').installed?
+  is_sendmail_installed = package('sendmail').installed?
+  if is_postfix_installed || is_sendmail_installed
+    describe.one do
+      describe file('/etc/postfix/main.cf') do
+        its('content') { should match /^smtpd_client_restrictions\s+=\s+permit_mynetworks,\s*reject$/ }
+      end
+
+      describe file('/etc/postfix/main.cf') do
+        its('content') { should match /^smtpd_client_restrictions\s+=\s+reject,\s*permit_mynetworks$/ }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-040480
 

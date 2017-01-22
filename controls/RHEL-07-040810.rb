@@ -42,8 +42,9 @@ firewalld.service - firewalld - dynamic firewall daemon
 If “firewalld” is not active, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040810
-  describe file('') do
-    it { should match // }
+  describe service('firewalld') do
+    it { should be_running }
+    it { should be_enabled }
   end
 # STOP_DESCRIBE RHEL-07-040810
 
