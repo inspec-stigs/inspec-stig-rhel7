@@ -42,8 +42,22 @@ If the kernel command line is configured to use FIPS mode, check to see if the s
 If the dracut-fips package is not installed, the kernel command line does not have a fips entry, or the system has a value of “0” for fips_enabled in /proc/sys/crypto, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021280
-  describe file('') do
-    it { should match // }
+  describe package('dracut-fips') do
+    it { should be_installed }
+  end
+
+  describe file('/proc/sys/crypto/fips_enabled') do
+    its('content') { should match /^1/ }
+  end
+
+  describe.one do
+    describe file('/boot/grub2/grub.cfg') do
+      its('content') { should match /fips=1/ }
+    end
+
+    describe file('/boot/efi/EFI/redhat/grub.cfg') do
+      its('content') { should match /fips=1/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-021280
 

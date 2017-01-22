@@ -60,9 +60,10 @@ All authorized non-administrative users must be mapped to the user_u role or the
 If they are not mapped in this way, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020090
-  describe file('') do
-    it { should match // }
-  end
+#  TODO: Complete this finding
+#  describe file('') do
+#    it { should match // }
+#  end
 # STOP_DESCRIBE RHEL-07-020090
 
 end

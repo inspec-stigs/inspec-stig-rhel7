@@ -33,8 +33,8 @@ Check the file system rules in /etc/audit/rules.d/audit.rules with the following
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030492
-  describe file('') do
-    it { should match // }
+  describe auditd_rules do
+    its('lines') { should include('-w /var/log/lastlog -p wa -k logins') }
   end
 # STOP_DESCRIBE RHEL-07-030492
 

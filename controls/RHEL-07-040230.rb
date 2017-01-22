@@ -57,8 +57,12 @@ If “enableOCSP” is not set to "true", this is a finding.
 If “ocspCacheSize” is not set to a value of “50” or less, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040230
-  describe file('') do
-    it { should match // }
+  cs_cfg_exists = file('/var/lib/pki-ca/conf/CS.cfg').file?
+  if cs_cfg_exists
+    describe file('/var/lib/pki-ca/conf/CS.cfg') do
+      its('content') { should match /^auths.revocationChecking.enabled=true$/ }
+      its('content') { should match /^auths.revocationChecking.bufferSize=([0-9]|[0-4][0-9]|50)$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040230
 

@@ -36,8 +36,9 @@ If the “kdump” service is active, ask the System Administrator (SA) if the u
 If the service is active and is not documented, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021230
-  describe file('') do
-    it { should match // }
+  describe service('kdump') do
+    it { should_not be_running }
+    it { should_not be_enabled }
   end
 # STOP_DESCRIBE RHEL-07-021230
 

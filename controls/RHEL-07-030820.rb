@@ -51,8 +51,26 @@ DatabaseDirectory /var/lib/clamav
 If the database file has a date older than seven days from the current date, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030820
-  describe file('') do
-    it { should match // }
+  describe.one do
+    describe service('nails') do
+      it { should be_running }
+      it { should be_enabled }
+    end
+
+    describe service('clamav-daemon') do
+      it { should be_running }
+      it { should be_enabled }
+    end
+  end
+
+  describe.one do
+    describe command('find /opt/NAI/LinuxShield/engine/dat/*.dat -mtime -7 2> /dev/null') do
+      its('stdout') { should match /\/opt\/NAI\/LinuxShield\/engine\/dat/ }
+    end
+
+    describe command('find /var/lib/clamav/*.cvd -mtime -7 2> /dev/null') do
+      its('stdout') { should match /\/var\/lib\/clamav/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-030820
 

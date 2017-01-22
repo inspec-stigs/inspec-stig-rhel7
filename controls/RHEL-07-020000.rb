@@ -25,8 +25,8 @@ control 'RHEL-07-020000' do
 If the rsh-server package is installed, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020000
-  describe file('') do
-    it { should match // }
+  describe package('rsh-server') do
+    it { should_not be_installed }
   end
 # STOP_DESCRIBE RHEL-07-020000
 

@@ -34,8 +34,26 @@ Note: The example will be for the “smithj” user, who has a home directory of
 If any file that sets a local interactive user’s environment variables to override the system is not owned by the home directory owner or root, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020840
-  describe file('') do
-    it { should match // }
+  find_cmd = "find %{file} -mindepth 1 -type f -prune -name '.*' ! -name '*.swp' 2> /dev/null"
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "init_files" => command(find_cmd % {file: interactive_user.split(":")[1]}).stdout.split("\n")
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    interactive_user['init_files'].each do |init_file|
+      describe.one do
+        describe file(init_file) do
+          it { should be_owned_by interactive_user['username'] }
+        end
+
+        describe file(init_file) do
+          it { should be_owned_by 'root' }
+        end
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-020840
 

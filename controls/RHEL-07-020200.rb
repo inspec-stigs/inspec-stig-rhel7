@@ -30,8 +30,8 @@ clean_requirements_on_remove=1
 If “clean_requirements_on_remove” is not set to “1”, “True”, or “yes”, or is not set in /etc/yum.conf, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020200
-  describe file('') do
-    it { should match // }
+  describe file('/etc/yum.conf') do
+    its('content') { should match /^clean_requirements_on_remove=(1|True|yes)$/ }
   end
 # STOP_DESCRIBE RHEL-07-020200
 

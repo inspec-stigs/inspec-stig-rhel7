@@ -59,8 +59,10 @@ If the command does not return the following output, this is a finding.
 -w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification'
 
 # START_DESCRIBE RHEL-07-030710
-  describe file('') do
-    it { should match // }
+  ['/etc/group', '/etc/passwd', '/etc/gshadow', '/etc/shadow', '/etc/security/opasswd'].each do |file|
+    describe auditd_rules do
+      its('lines') { should include("-w #{file} -p wa -k audit_rules_usergroup_modification") }
+    end
   end
 # STOP_DESCRIBE RHEL-07-030710
 

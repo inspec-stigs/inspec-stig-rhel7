@@ -28,8 +28,8 @@ If the "imtcp" module is being loaded in the "/etc/rsyslog.conf" file ask to see
 If the documentation does not exist, or does not specify the server as a log aggregation system, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030780
-  describe file('') do
-    it { should match // }
+  describe file('/etc/rsyslog.conf') do
+    it { should_not match /^ModLoad\s+imtcp$/ }
   end
 # STOP_DESCRIBE RHEL-07-030780
 

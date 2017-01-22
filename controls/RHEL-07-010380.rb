@@ -31,10 +31,12 @@ Check the configuration of the /etc/sudoers and /etc/sudoers.d/* files with the 
 If any line is found with a "NOPASSWD" tag, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010380
-  describe file('') do
-    it { should match // }
+  sudoers_files = command('find /etc/sudoers* -type f 2> /dev/null').stdout.split("\n")
+  sudoers_files.each do |sudoers_file|
+    describe file(sudoers_file) do
+      its('content') { should_not match /^(?!#).*(NOPASSWD|nopasswd).*$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010380
 
 end
-

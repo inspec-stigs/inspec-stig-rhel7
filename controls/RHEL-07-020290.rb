@@ -37,8 +37,8 @@ Accounts such as “games” and “gopher” are not authorized accounts as the
 If the accounts on the system do not match the provided documentation, or accounts that do not support an authorized system function are present, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020290
-  describe file('') do
-    it { should match // }
+  describe file('/etc/passwd') do
+    its('content') { should_not match /^(games|gopher)/ }
   end
 # STOP_DESCRIBE RHEL-07-020290
 

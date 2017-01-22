@@ -28,8 +28,8 @@ net.ipv4.conf.default.accept_source_route=0
 If the returned line does not have a value of “0”, a line is not returned, or the returned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040351
-  describe file('') do
-    it { should match // }
+  describe kernel_parameter('net.ipv4.conf.default.accept_source_route') do
+    its('value') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040351
 

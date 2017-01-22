@@ -51,8 +51,14 @@ running
 If “firewalld” does not show a state of “running”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040290
-  describe file('') do
-    it { should match // }
+  describe service('firewalld') do
+    it { should be_running }
+    it { should be_enabled }
+  end
+
+  describe command('firewall-cmd --state') do
+    its('stdout') { should match /^running/ }
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040290
 

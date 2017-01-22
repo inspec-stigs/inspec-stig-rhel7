@@ -31,8 +31,8 @@ RhostsRSAAuthentication yes
 If the value is returned as “no”, the returned line is commented out, or no output is returned, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040333
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('RhostsRSAAuthentication') { should eq 'yes' }
   end
 # STOP_DESCRIBE RHEL-07-040333
 

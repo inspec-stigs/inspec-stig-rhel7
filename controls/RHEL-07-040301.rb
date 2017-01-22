@@ -34,8 +34,8 @@ PrintLastLog yes
 If the “PrintLastLog” keyword is set to “no”, is missing, or is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040301
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('PrintLastLog') { should eq 'yes' }
   end
 # STOP_DESCRIBE RHEL-07-040301
 

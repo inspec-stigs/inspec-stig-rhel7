@@ -36,8 +36,8 @@ StrictModes yes
 If “StrictModes” is set to "no", is missing, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040680
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('StrictModes') { should eq 'yes' }
   end
 # STOP_DESCRIBE RHEL-07-040680
 

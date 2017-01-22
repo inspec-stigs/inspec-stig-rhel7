@@ -28,8 +28,8 @@ Check the configuration of “rsyslog” with the following command:
 If there are no lines in the “/etc/rsyslog.conf” file that contain the “@” or “@@” symbol(s), and the lines with the correct symbol(s) to send output to another system do not cover all “rsyslog” output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030770
-  describe file('') do
-    it { should match // }
+  describe file('/etc/rsyslog.conf') do
+    it { should match /^\*\.\*\s+@{1,2}.+$/ }
   end
 # STOP_DESCRIBE RHEL-07-030770
 

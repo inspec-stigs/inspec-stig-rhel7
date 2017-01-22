@@ -17,19 +17,19 @@ control 'RHEL-07-040250' do
   tag ruleid: 'RHEL-07-040250_rule'
   tag fixtext: 'Create a direct firewall rule to protect against DoS attacks with the following command:
 
-# firewall-cmd --direct --add-rule ipv4 filter IN_public_allow 0 -m tcp -p tcp -m limit --limit 25/minute --limit-burst 100  -j ACCEPT'
+# firewall-cmd --direct --add-rule ipv4 filter IN_public_allow 0 -m tcp -p tcp -m limit --limit 25/minute --limit-burst 100 -j ACCEPT'
   tag checktext: 'Verify the operating system protects against or limits the effects of DoS attacks by ensuring the operating system is implementing rate-limiting measures on impacted network interfaces.
 
 Check the firewall configuration with the following command:
 
 # firewall-cmd --direct --get-rule ipv4 filter IN_public_allow
-rule ipv4 filter IN_public_allow 0 -m tcp -p tcp -m limit --limit 25/minute --limit-burst 100  -j ACCEPT
+rule ipv4 filter IN_public_allow 0 -m tcp -p tcp -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
 
 If a rule with both the limit and limit-burst arguments parameters does not exist, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040250
-  describe file('') do
-    it { should match // }
+  describe command('firewall-cmd --direct --get-rule ipv4 filter IN_public_allow') do
+    its('stdout') { should match /0 -m tcp -p tcp -m limit --limit 25\/minute --limit-burst 100 -j ACCEPT/ }
   end
 # STOP_DESCRIBE RHEL-07-040250
 

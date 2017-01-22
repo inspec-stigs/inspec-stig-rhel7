@@ -35,8 +35,13 @@ UUID=a411dc99-f2a1-4c87-9e05-184977be8539 /home   ext4   rw,relatime,discard,dat
 If a file system found in “/etc/fstab” refers to the user home directory file system and it does not have the “nosetuid” option set, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021010
-  describe file('') do
-    it { should match // }
+  fstab_lines = file('/etc/fstab').content.split("\n")
+  fstab_lines.each do |fstab_line|
+    if fstab_line.include? 'home' and fstab_line !~ /^#/
+      describe command("echo '#{fstab_line}'") do
+        its('stdout') { should match /nosetuid/ }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-021010
 

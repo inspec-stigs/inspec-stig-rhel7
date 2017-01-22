@@ -30,8 +30,8 @@ PermitEmptyPasswords no
 If the “PermitEmptyPasswords” keyword is not set to “no”, is missing, or is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010440
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('PermitEmptyPasswords') { should eq 'no' }
   end
 # STOP_DESCRIBE RHEL-07-010440
 

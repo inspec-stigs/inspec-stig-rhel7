@@ -26,8 +26,8 @@ UUID=7835718b    /tmp    ext4    nodev,nosetuid,noexec      1 2
 If a separate entry for /tmp is not in use, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021270
-  describe file('') do
-    it { should match // }
+  describe file('/etc/fstab') do
+    its('content') { should match /\/tmp/ }
   end
 # STOP_DESCRIBE RHEL-07-021270
 

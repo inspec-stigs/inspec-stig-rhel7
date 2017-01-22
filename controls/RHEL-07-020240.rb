@@ -28,8 +28,8 @@ Current End of Life for RHEL 7 is June 30, 2024.
 If the release is not supported by the vendor, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020240
-  describe file('') do
-    it { should match // }
+  describe file('/etc/redhat-release') do
+    its('content') { should match /7\.[0-3]/ }
   end
 # STOP_DESCRIBE RHEL-07-020240
 

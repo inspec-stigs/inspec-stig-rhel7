@@ -39,8 +39,14 @@ Note: The output lines of the command are duplicated to cover both 32-bit and 64
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030381
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('fchown').arch('b32').key('perm_mod').action('always').list do
+    it { should eq(['exit']) }
+  end
+
+  if os[:arch] == 'x86_64'
+    describe auditd_rules.syscall('fchown').arch('b64').key('perm_mod').action('always').list do
+      it { should eq(['exit']) }
+    end
   end
 # STOP_DESCRIBE RHEL-07-030381
 

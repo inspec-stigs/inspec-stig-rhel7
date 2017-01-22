@@ -32,15 +32,21 @@ Note: The output lines of the command are duplicated to cover both 32-bit and 64
 
 # grep -i openat /etc/audit/rules.d/audit.rules
 
--a always,exit -F arch=b32 -S openat -Fexit=-EPERM -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
+-a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
 
--a always,exit -F arch=b64 -S  openat -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
+-a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -F key=access
 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030422
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('openat').arch('b32').exit('-EPERM').key('access').action('always').list do
+    it { should eq(['exit']) }
+  end
+
+  if os[:arch] == 'x86_64'
+    describe auditd_rules.syscall('openat').arch('b64').exit('-EACCES').key('access').action('always').list do
+      it { should eq(['exit']) }
+    end
   end
 # STOP_DESCRIBE RHEL-07-030422
 

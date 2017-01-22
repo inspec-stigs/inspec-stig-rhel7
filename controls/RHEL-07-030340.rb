@@ -39,8 +39,9 @@ If the value of the “network_failure_action” option is not “syslog”, “
 If the value of the “disk_full_action” option is not "syslog", "single", or "halt", or the line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030340
-  describe file('') do
-    it { should match // }
+  describe file('/etc/audisp/audisp-remote.conf') do
+    its('content') { should match /^disk_full_action\s*=\s*(syslog|single|halt)$/ }
+    its('content') { should match /^network_failure_action\s*=\s*(syslog|single|halt)$/ }
   end
 # STOP_DESCRIBE RHEL-07-030340
 

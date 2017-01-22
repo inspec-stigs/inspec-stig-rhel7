@@ -4,6 +4,9 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+banner_message_text1 = attribute('banner_message_text', default: '^You are accessing', description: 'text to match for banner message')
+banner_message_text2 = attribute('banner_message_text', default: 'Unauthorized use of this system is strictly prohibited', description: 'text to match for banner message')
+
 title 'RHEL-07-040170 - The Standard Mandatory DoD Notice and Consent Banner must be displayed immediately prior to, or as part of, remote access logon prompts.'
 control 'RHEL-07-040170' do
   impact 0.5
@@ -65,8 +68,18 @@ If the system does not display a graphical logon banner or the banner does not m
 If the text in the file does not match the Standard Mandatory DoD Notice and Consent Banner, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040170
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('Banner') { should eq '/etc/issue' }
+  end
+
+  describe.one do
+    describe file('/etc/issue') do
+      its('content') { should match /#{banner_message_text1}/ }
+    end
+
+    describe file('/etc/issue') do
+      its('content') { should match /#{banner_message_text2}/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040170
 

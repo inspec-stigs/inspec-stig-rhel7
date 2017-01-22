@@ -40,8 +40,19 @@ drwxr-x---  1 smithj users        860 Nov 28 06:43 smithj
 If the user home directory referenced in “/etc/passwd” is not group-owned by that user’s primary GID, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020670
-  describe file('') do
-    it { should match // }
+  group_cmd = "id -gn %{username}"
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "group" => command(group_cmd % {username: interactive_user.split(":")[0]}).stdout.strip(),
+    "home" => interactive_user.split(":")[1]
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    describe file(interactive_user['home']) do
+      it { should be_grouped_into interactive_user['group'] }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020670
 

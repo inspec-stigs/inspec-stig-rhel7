@@ -34,8 +34,9 @@ Active: active (running) since Tue 2015-01-27 19:41:23 EST; 22h ago
 If the auditd status is not active, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030010
-  describe file('') do
-    it { should match // }
+  describe service('auditd') do
+    it { should be_running }
+    it { should be_enabled }
   end
 # STOP_DESCRIBE RHEL-07-030010
 

@@ -30,8 +30,8 @@ ClientAliveCountMax 0
 If “ClientAliveCountMax” is not set to “0” in /etc/ ssh/sshd_config, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040191
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('ClientAliveCountMax') { should eq '0' }
   end
 # STOP_DESCRIBE RHEL-07-040191
 

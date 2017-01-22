@@ -33,8 +33,11 @@ If the file does exist, check for the default community strings with the followi
 If either of these command returns any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040580
-  describe file('') do
-    it { should match // }
+  snmpd_conf_exits = file('/etc/snmp/snmpd.conf').file?
+  if snmpd_conf_exits
+    describe file('/etc/snmp/snmpd.conf') do
+      its('content') { should_not match /.*(public|private).*/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040580
 

@@ -33,8 +33,8 @@ Check for the following system calls being audited by performing the following c
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030522
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('all').path('/usr/bin/sudo').perm('x').key('privileged-priv_change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030522
 

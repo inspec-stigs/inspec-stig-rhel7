@@ -34,8 +34,9 @@ autofs.service - Automounts filesystems on demand
 If the “autofs” status is set to “active” and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020161
-  describe file('') do
-    it { should match // }
+  describe service('autofs') do
+    it { should_not be_running }
+    it { should_not be_enabled }
   end
 # STOP_DESCRIBE RHEL-07-020161
 

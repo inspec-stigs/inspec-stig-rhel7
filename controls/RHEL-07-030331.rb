@@ -30,8 +30,8 @@ enable_krb5 = yes
 If the value of the “enable_krb5” option is not set to "yes" or the line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030331
-  describe file('') do
-    it { should match // }
+  describe file('/etc/audisp/audisp-remote.conf') do
+    its('content')  { should match /^enable_krb5\s*=\s*yes$/ }
   end
 # STOP_DESCRIBE RHEL-07-030331
 

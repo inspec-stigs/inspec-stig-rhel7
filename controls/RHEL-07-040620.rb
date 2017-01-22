@@ -30,10 +30,9 @@ MACs hmac-sha2-256,hmac-sha2-512
 If any ciphers other than “hmac-sha2-256” or “hmac-sha2-512” are listed or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040620
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('MACs') { should eq 'hmac-sha2-256,hmac-sha2-512' }
   end
 # STOP_DESCRIBE RHEL-07-040620
 
 end
-
