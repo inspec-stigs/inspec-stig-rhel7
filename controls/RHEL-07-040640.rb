@@ -44,8 +44,18 @@ If any file has a mode more permissive than “0644”, this is a finding.'
 # START_DESCRIBE RHEL-07-040640
   pub_keys = command('find / -name "*.pub"').stdout.split("\n")
   for pub_key in pub_keys do
-    describe file(pub_key) do
-      its('mode') { should cmp '0644' }
+    describe.one do
+      describe file(pub_key) do
+        its('mode') { should cmp '0644' }
+      end
+
+      describe file(pub_key) do
+        its('mode') { should cmp '0640' }
+      end
+
+      describe file(pub_key) do
+        its('mode') { should cmp '0600' }
+      end
     end
   end
 # STOP_DESCRIBE RHEL-07-040640
