@@ -39,9 +39,10 @@ Verify the directory set with the “tls_cacertdir” option exists.
 If the directory does not exist or the option is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040181
-  if File.open('/etc/sysconfig/authconfig').each_line.any?{|line| line.include?('USELDAPAUTH=yes')}
+  ldap_auth_enabled = command('grep -i USELDAPAUTH=yes /etc/sysconfig/authconfig').exit_status
+  if ldap_auth_enabled
     describe file('/etc/pam_ldap.conf') do
-      its('content') { should match /^tls_cacertdir \/etc\/openldap\/certs$/ }
+      its('content') { should match /^tls_cacertdir\s+\/etc\/openldap\/certs$/ }
     end
 
     describe file('/etc/openldap/certs') do

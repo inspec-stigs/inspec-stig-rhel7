@@ -28,7 +28,8 @@ If any .shosts files are found on the system, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040330
   describe command('find / -name *.shosts') do
-    its('stdout') { should eq '' }
+    its('stdout') { should match // }
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040330
 

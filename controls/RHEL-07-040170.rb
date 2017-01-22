@@ -4,6 +4,8 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+banner_message_text = attribute('banner_message_text', default: '^You are accessing', description: 'text to match for banner message')
+
 title 'RHEL-07-040170 - The Standard Mandatory DoD Notice and Consent Banner must be displayed immediately prior to, or as part of, remote access logon prompts.'
 control 'RHEL-07-040170' do
   impact 0.5
@@ -70,7 +72,7 @@ If the text in the file does not match the Standard Mandatory DoD Notice and Con
   end
 
   describe file('/etc/issue') do
-    its('content') { should match /^You are accessing a U\.S\. Government \(USG\) Information System \(IS\) that is provided for USG-authorized use only\. By using this IS \(which includes any device attached to this IS\), you consent to the following conditions:\n\n-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct \(PM\), law enforcement \(LE\), and counterintelligence \(CI\) investigations\.\n\n-At any time, the USG may inspect and seize data stored on this IS\.\n\n-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose\.\n\n-This IS includes security measures \(e\.g\., authentication and access controls\) to protect USG interests--not for your personal benefit or privacy\.\n\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants\. Such communications and work product are private and confidential\. See User Agreement for details\./ }
+    its('content') { should match /#{banner_message_text}/ }
   end
 # STOP_DESCRIBE RHEL-07-040170
 
