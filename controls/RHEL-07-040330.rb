@@ -27,9 +27,8 @@ Check the system for the existence of these files with the following command:
 If any .shosts files are found on the system, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040330
-  describe command('find / -name *.shosts') do
-    its('stdout') { should match /^$/ }
-    its('exit_status') { should eq 0 }
+  describe command('find / -name *.shosts 2> /dev/null') do
+    its('stdout') { should eq '' }
   end
 # STOP_DESCRIBE RHEL-07-040330
 

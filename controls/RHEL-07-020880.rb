@@ -32,9 +32,10 @@ Note: The example will be for a system that is configured to create users’ hom
 If any local initialization files are found to reference world-writable files, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020880
-  describe file('') do
-    it { should match // }
-  end
+#  TODO: Complete this finding
+#  describe file('') do
+#    it { should match // }
+#  end
 # STOP_DESCRIBE RHEL-07-020880
 
 end

@@ -33,9 +33,10 @@ Ask the System Administrator (SA) if any users found without home directories ar
 If any interactive users do not have a home directory assigned, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020620
-  describe file('') do
-    it { should match // }
-  end
+#  TODO: Complete this finding
+#  describe file('') do
+#    it { should match // }
+#  end
 # STOP_DESCRIBE RHEL-07-020620
 
 end

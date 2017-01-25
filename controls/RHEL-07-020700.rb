@@ -34,8 +34,17 @@ Note: The example will be for the user “smithj”, who has a home directory of
 If any files are found with a mode more permissive than “0750”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020700
-  describe file('') do
-    it { should match // }
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "home" => interactive_user.split(":")[1]
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    describe command("find #{interactive_user['home']} -perm /g=w,o=w,o=r,o=x ! -name '.*' 2> /dev/null") do
+      its('stdout') { should eq '' }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020700
 

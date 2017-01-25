@@ -43,9 +43,10 @@ All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
 If the "xattrs" rule is not being used on all selection lines in the “/etc/aide.conf” file, or extended attributes are not being checked by another file integrity tool, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021610
-  describe file('') do
-    it { should match // }
-  end
+#  TODO: Complete this finding
+#  describe file('') do
+#    it { should match // }
+#  end
 # STOP_DESCRIBE RHEL-07-021610
 
 end

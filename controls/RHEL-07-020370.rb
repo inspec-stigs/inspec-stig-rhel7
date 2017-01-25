@@ -27,9 +27,8 @@ Check the owner of all files and directories with the following command:
 If any files on the system do not have an assigned group, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020370
-  describe command('find / -xdev -nogroup -fstype local') do
-    its('stdout') { should match /^$/ }
-    its('exit_status') { should eq 0 }
+  describe command('find / -xdev -nogroup -fstype local 2> /dev/null') do
+    its('stdout') { should eq '' }
   end
 # STOP_DESCRIBE RHEL-07-020370
 

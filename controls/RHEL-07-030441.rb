@@ -35,9 +35,8 @@ If the command does not return the following output, this is a finding.
 -F perm=x -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -k privileged-priv_change'
 
 # START_DESCRIBE RHEL-07-030441
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-a always,exit -F path=\/usr\/sbin\/semanage/ }
-    its('stdout') { should match /^-a always,exit -F arch=b32 -S lsetxattr -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 key=perm_mod/ }
+  describe auditd_rules.syscall('all').path('/usr/sbin/semanage').action do
+    it { should eq(['always']) }
   end
 # STOP_DESCRIBE RHEL-07-030441
 

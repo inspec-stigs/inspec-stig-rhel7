@@ -33,8 +33,8 @@ Check the file system rule in /etc/audit/rules.d/audit.rules with the following 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030491
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-w \/var\/run\/faillock -p wa -k logins/ }
+  describe auditd_rules do
+    its('lines') { should include('-w /var/run/faillock -p wa -k logins') }
   end
 # STOP_DESCRIBE RHEL-07-030491
 

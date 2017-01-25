@@ -39,8 +39,12 @@ Note: Device files are normally found under “/dev”, but applications may pla
 If there is output from either of these commands, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020940
-  describe file('') do
-    it { should match // }
+  describe command('find / -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n" 2> /dev/null') do
+    its('stdout') { should eq '' }
+  end
+
+  describe command('find / -context *:unlabeled_t:* \( -type c -o -type b \) -printf "%p %Z\n" 2> /dev/null') do
+    its('stdout') { should eq '' }
   end
 # STOP_DESCRIBE RHEL-07-020940
 

@@ -33,8 +33,8 @@ Check for the following system call being audited by performing the following co
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030540
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-a always,exit -F path=\/usr\/sbin\/postdrop -F perm=x -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 -k privileged-postfix/ }
+  describe auditd_rules.syscall('all').path('/usr/sbin/postdrop').action do
+    it { should eq(['always']) }
   end
 # STOP_DESCRIBE RHEL-07-030540
 

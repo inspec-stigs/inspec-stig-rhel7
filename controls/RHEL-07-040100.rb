@@ -36,9 +36,10 @@ Ask the system administrator for the site or program PPSM CLSA. Verify the servi
 If there are additional ports, protocols, or services that are not in the PPSM CLSA, or there are ports, protocols, or services that are prohibited by the PPSM Category Assurance List (CAL), this is a finding.'
 
 # START_DESCRIBE RHEL-07-040100
-  describe file('') do
-    it { should match // }
-  end
+#  TODO: Complete this finding
+#  describe file('') do
+#    it { should match // }
+#  end
 # STOP_DESCRIBE RHEL-07-040100
 
 end

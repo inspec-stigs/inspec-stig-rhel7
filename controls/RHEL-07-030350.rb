@@ -51,8 +51,17 @@ space_left = 225
 If the value of the “space_left” keyword is not set to 75 percent of the total partition size, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030350
-  describe file('') do
-    it { should match // }
+  describe file('/etc/audit/auditd.conf') do
+    its('content') { should match /^log_file\s+=\s+.+$/ }
+  end
+
+  log_file_name = command('grep "^log_file" /etc/audit/auditd.conf | awk "{print $3}"').stdout.strip()
+  log_partition_name = command("df #{log_file_name} | awk '/^\\/dev/ {print $1}'").stdout.strip()
+  log_partition_size = command("df #{log_file_name} | awk '/^\\/dev/ {print $2}'").stdout.strip().to_f / 1000
+  space_left = (log_partition_size - 0.75 * log_partition_size).round
+
+  describe file('/etc/audit/auditd.conf') do
+    its('content') { should match /^space_left\s+=\s+#{space_left}$/ }
   end
 # STOP_DESCRIBE RHEL-07-030350
 

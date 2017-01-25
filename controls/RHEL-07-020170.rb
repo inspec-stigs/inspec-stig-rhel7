@@ -34,7 +34,7 @@ If any other partitions do not have a type of “crypto_LUKS”, this is a findi
 
 # START_DESCRIBE RHEL-07-020170
   blkids = command('blkid').stdout.split("\n")
-  for blkid in blkids
+  blkids.each do |blkid|
     describe command("echo '#{blkid}'") do
       its('stdout') { should match /^.+TYPE="crypto_LUKS".*$/ }
     end

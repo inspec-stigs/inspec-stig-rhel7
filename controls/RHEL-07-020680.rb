@@ -33,13 +33,19 @@ Check the owner of all files and directories in a local interactive user’s hom
 If any files are found with an owner different than the home directory user, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020680
-  interactive_users = command('grep -E "\/usr\/bin\/(ash|csh|sh|ksh|tcsh|sash|zsh|dash|screen|bash|rbash)|\/bin\/(ash|csh|sh|ksh|tcsh|sash|zsh|dash|screen|bash|rbash)" /etc/passwd | cut -d: -f1,6').stdout.split("\n")
-  interactive_users.map! { |interactive_user| { "username" => interactive_user.split(":")[0], "home" => interactive_user.split(":")[1] } }
+  find_cmd = "find %{file} 2> /dev/null"
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "home_files" => command(find_cmd % {file: interactive_user.split(":")[1]}).stdout.split("\n")
+    }
+  }
 
-  for interactive_user in interactive_users do
-    describe command("find #{interactive_user['home']} ! -user #{interactive_user['username']}") do
-      its('stdout') { should match /^$/ }
-      its('exit_status') { should eq 0 }
+  interactive_users.each do |interactive_user|
+    interactive_user['home_files'].each do |home_file|
+      describe file(home_file) do
+        it { should be_owned_by interactive_user['username'] }
+      end
     end
   end
 # STOP_DESCRIBE RHEL-07-020680

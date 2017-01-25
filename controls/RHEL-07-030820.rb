@@ -63,19 +63,13 @@ If the database file has a date older than seven days from the current date, thi
     end
   end
 
-  is_nails_running = package('nails').installed?
-  if is_nails_running
-    describe command('find /opt/NAI/LinuxShield/engine/dat/*.dat -mtime -7') do
+  describe.one do
+    describe command('find /opt/NAI/LinuxShield/engine/dat/*.dat -mtime -7 2> /dev/null') do
       its('stdout') { should match /\/opt\/NAI\/LinuxShield\/engine\/dat/ }
-      its('exit_status') { should eq 0 }
     end
-  end
 
-  is_clamav_running = package('clamav').installed?
-  if is_clamav_running
-    describe command('find /var/lib/clamav/*.cvd -mtime -7') do
+    describe command('find /var/lib/clamav/*.cvd -mtime -7 2> /dev/null') do
       its('stdout') { should match /\/var\/lib\/clamav/ }
-      its('exit_status') { should eq 0 }
     end
   end
 # STOP_DESCRIBE RHEL-07-030820

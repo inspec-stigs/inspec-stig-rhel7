@@ -27,8 +27,13 @@ UUID=2bc871e4-e2a3-4f29-9ece-3be60c835222     /mnt/usbflash      vfat   noauto,o
 If a file system found in “/etc/fstab” refers to removable media and it does not have the “nosetuid” option set, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021011
-  describe file('') do
-    it { should match // }
+  fstab_lines = file('/etc/fstab').content.split("\n")
+  fstab_lines.each do |fstab_line|
+    if fstab_line =~ /mnt|media/ and fstab_line !~ /^#/
+      describe command("echo '#{fstab_line}'") do
+        its('stdout') { should match /nosetuid/ }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-021011
 

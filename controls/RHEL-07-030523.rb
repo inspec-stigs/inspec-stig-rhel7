@@ -37,8 +37,8 @@ Check for modification of the following files being audited by performing the fo
 If the command does not return output that does not match the examples, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030523
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-w \/etc\/sudoers -p wa -k privileged-actions/ }
+  describe auditd_rules do
+    its('lines') { should include('-w /etc/sudoers.d/ -p wa -F key=privileged-actions') }
   end
 # STOP_DESCRIBE RHEL-07-030523
 

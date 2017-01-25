@@ -37,8 +37,14 @@ set root=(hd0,1)
 If the system is using an alternate boot loader on removable media, and documentation does not exist approving the alternate configuration, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021760
-  describe file('') do
-    it { should match // }
+  describe.one do
+    describe file('/boot/grub2/grub.cfg') do
+      its('content') { should match /set\s+root=/ }
+    end
+
+    describe file('/boot/efi/EFI/redhat/grub.cfg') do
+      its('content') { should match /set\s+root=/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-021760
 

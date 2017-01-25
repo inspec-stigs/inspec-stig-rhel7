@@ -27,8 +27,13 @@ UUID=e06097bb-cfcd-437b-9e4d-a691f5662a7d    /store           nfs           rw,n
 If a file system found in “/etc/fstab” refers to NFS and it does not have the “nosuid” option set, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021012
-  describe file('') do
-    it { should match // }
+  fstab_lines = file('/etc/fstab').content.split("\n")
+  fstab_lines.each do |fstab_line|
+    if fstab_line.include? 'nfs' and fstab_line !~ /^#/
+      describe command("echo '#{fstab_line}'") do
+        its('stdout') { should match /nosuid/ }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-021012
 

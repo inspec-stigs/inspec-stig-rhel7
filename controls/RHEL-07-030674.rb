@@ -37,8 +37,8 @@ If the command does not return the following output (appropriate to the architec
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030674
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-w \/sbin\/modprobe -p x -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0\.c1023 -F key=module-change/ }
+  describe auditd_rules do
+    its('lines') { should include(%r{-w /sbin/modprobe}) }
   end
 # STOP_DESCRIBE RHEL-07-030674
 

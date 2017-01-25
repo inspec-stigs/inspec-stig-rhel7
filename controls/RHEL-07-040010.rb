@@ -31,14 +31,7 @@ If the maxlogins item is missing or the value is not set to 10 or less for all d
 
 # START_DESCRIBE RHEL-07-040010
   describe file('/etc/security/limits.conf') do
-    its('content') { should match /^.+\s+hard\s+maxlogins\s+[0-9]+/ }
-  end
-
-  maxlogins = command('grep -iE "^.+\s+hard\s+maxlogins\s+[0-9]+" /etc/security/limits.conf | grep -Eo "[0-9]+"').stdout.split("\n")
-  for maxlogin in maxlogins do
-    describe command("if [ #{maxlogin} -le 10 ]; then exit 0; else exit 1; fi") do
-      its('exit_status') { should eq 0 }
-    end
+    its('content') { should match /^.+\s+hard\s+maxlogins\s+([0-9]|10)$/ }
   end
 # STOP_DESCRIBE RHEL-07-040010
 

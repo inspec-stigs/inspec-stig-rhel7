@@ -40,8 +40,18 @@ user \'smithj\': directory \'/home/smithj\' does not exist
 If any home directories referenced in “/etc/passwd” are returned as not defined, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020640
-  describe file('') do
-    it { should match // }
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "home" => interactive_user.split(":")[1]
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    describe file(interactive_user['home']) do
+      it { should exist }
+      it { should be_directory }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020640
 
