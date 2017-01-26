@@ -42,7 +42,7 @@ Check the mode of the public host key files under /etc/ssh file with the followi
 If any file has a mode more permissive than “0644”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040640
-  describe command('find / -type f -perm /u=x,g=w,g=x,o=w,o=r,o=x -name "*.pub" 2> /dev/null') do
+  describe command('find / -type f -perm /u=x,g=w+x,o=w+x -name "*.pub" 2> /dev/null') do
     its('stdout') { should eq '' }
   end
 # STOP_DESCRIBE RHEL-07-040640

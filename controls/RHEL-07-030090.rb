@@ -48,7 +48,7 @@ If the "-f" flag is set to any value other than “1” or “2”, this is a CA
 If the "-f" flag is set to “1” but the availability concern is not documented or there is no monitoring of the kernel log, this is a CAT III finding.'
 
 # START_DESCRIBE RHEL-07-030090
-  describe command('grep -rE "\-f\s+2" /etc/audit/*') do
+  describe command('grep -rE "^\-f\s+2" /etc/audit/*') do
     its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-030090

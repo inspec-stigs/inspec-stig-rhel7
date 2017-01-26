@@ -50,15 +50,11 @@ If the dracut-fips package is not installed, the kernel command line does not ha
     its('content') { should match /^1/ }
   end
 
-  grub_cfg_exists = file('/boot/grub2/grub.cfg').file?
-  if grub_cfg_exists
+  describe.one do
     describe file('/boot/grub2/grub.cfg') do
       its('content') { should match /fips=1/ }
     end
-  end
 
-  uefi_grub_cfg_exists = file('/boot/efi/EFI/redhat/grub.cfg').file?
-  if uefi_grub_cfg_exists
     describe file('/boot/efi/EFI/redhat/grub.cfg') do
       its('content') { should match /fips=1/ }
     end

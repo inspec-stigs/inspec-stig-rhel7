@@ -39,13 +39,13 @@ Note: The output lines of the command are duplicated to cover both 32-bit and 64
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030423
-  describe auditd_rules.syscall('open_by_handle_at').arch('b32').action do
-    it { should eq(['always']) }
+  describe auditd_rules.syscall('open_by_handle_at').exit('-EPERM').arch('b32').key('access').action('always').list do
+    it { should eq(['exit']) }
   end
 
   if os[:arch] == 'x86_64'
-    describe auditd_rules.syscall('open_by_handle_at').arch('b64').action do
-      it { should eq(['always']) }
+    describe auditd_rules.syscall('open_by_handle_at').exit('-EACCES').arch('b64').key('access').action('always').list do
+      it { should eq(['exit']) }
     end
   end
 # STOP_DESCRIBE RHEL-07-030423

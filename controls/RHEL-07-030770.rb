@@ -29,7 +29,7 @@ If there are no lines in the “/etc/rsyslog.conf” file that contain the “@�
 
 # START_DESCRIBE RHEL-07-030770
   describe file('/etc/rsyslog.conf') do
-    it { should match /^\*\.\*\s+@@.+$/ }
+    it { should match /^\*\.\*\s+@{1,2}.+$/ }
   end
 # STOP_DESCRIBE RHEL-07-030770
 

@@ -35,9 +35,9 @@ If the auth, authpriv, and daemon facilities are not being logged, or they are b
 
 # START_DESCRIBE RHEL-07-040020
   describe file('/etc/rsyslog.conf') do
-    its('content') { should match /^auth\.\*/ }
-    its('content') { should match /^authpriv\.\*/ }
-    its('content') { should match /^daemon\.notice/ }
+    its('content') { should match /auth\.\*|auth.+debug\s+\/var\/log\/auth\.log/ }
+    its('content') { should match /authpriv\.\*|authpriv.+debug\s+\/var\/log\/auth\.log/ }
+    its('content') { should match /^daemon\.notice\s+\/var\/log\/messages/ }
   end
 # STOP_DESCRIBE RHEL-07-040020
 

@@ -35,14 +35,8 @@ If the command does not return the following output (appropriate to the architec
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030672
-  describe auditd_rules.syscall('delete_module').arch('b32').action do
-    it { should eq(['always']) }
-  end
-
-  if os[:arch] == 'x86_64'
-    describe auditd_rules.syscall('delete_module').arch('b64').action do
-      it { should eq(['always']) }
-    end
+  describe auditd_rules do
+    its('lines') { should contain_match(%r{-w /sbin/insmod -p x .* -k module-change}) }
   end
 # STOP_DESCRIBE RHEL-07-030672
 

@@ -31,8 +31,8 @@ Check for the following system call being audited by performing the following co
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030525
-  describe auditd_rules.syscall('all').path('/usr/bin/chsh').action do
-    it { should eq(['always']) }
+  describe auditd_rules.syscall('all').path('/usr/bin/chsh').perm('x').key('privileged-priv_change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030525
 

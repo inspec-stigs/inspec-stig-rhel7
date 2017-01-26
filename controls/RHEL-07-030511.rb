@@ -33,8 +33,8 @@ Check the file system rule in /etc/audit/rules.d/audit.rules with the following 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030511
-  describe auditd_rules.syscall('all').path('/sbin/unix_chkpwd').action do
-    it { should eq(['always']) }
+  describe auditd_rules.syscall('all').path('/sbin/unix_chkpwd').perm('x').key('privileged-passwd').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030511
 

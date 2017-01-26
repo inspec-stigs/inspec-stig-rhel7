@@ -42,7 +42,7 @@ If any local initialization files have a mode more permissive than “0740”, t
   }
 
   interactive_users.each do |interactive_user|
-    describe command("find #{interactive_user['home']} -perm /g=w,g=x,o=w,o=r,o=x -name '.*' 2> /dev/null") do
+    describe command("find #{interactive_user['home']} -perm /g=w+x,o=w+r+x -name '.*' 2> /dev/null") do
       its('stdout') { should eq '' }
     end
   end

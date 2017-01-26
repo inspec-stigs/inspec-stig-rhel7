@@ -42,8 +42,8 @@ If all setuid/setgid files on the system do not have audit rule coverage, this i
 # START_DESCRIBE RHEL-07-030310
   priv_functions = command('find / -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null').stdout.split("\n")
   priv_functions.each do |priv_function|
-    describe auditd_rules.syscall('all').path("#{priv_function}").key('setuid/setgid').action do
-      it { should eq(['always']) }
+    describe auditd_rules.syscall('all').path("#{priv_function}").key('setuid/setgid').action('always').list do
+      it { should eq(['exit']) }
     end
   end
 # STOP_DESCRIBE RHEL-07-030310

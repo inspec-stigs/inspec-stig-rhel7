@@ -42,7 +42,7 @@ If any files are found with a mode more permissive than “0750”, this is a fi
   }
 
   interactive_users.each do |interactive_user|
-    describe command("find #{interactive_user['home']} -perm /g=w,o=w,o=r,o=x ! -name '.*' 2> /dev/null") do
+    describe command("find #{interactive_user['home']} -perm /g=w,o=w+r+x ! -name '.*' 2> /dev/null") do
       its('stdout') { should eq '' }
     end
   end

@@ -33,8 +33,8 @@ Check for the following system call being audited by performing the following co
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030561
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-a always,exit -F path=\/usr\/bin\/crontab -F perm=x -F auid>=1000 -F auid!=-1 -F subj_user=unconfined_u -F subj_role=unconfined_r -F subj_type=unconfined_t -F subj_sen=s0-s0 -F subj_clr=c0\.c1023 -F key=privileged-cron/ }
+  describe auditd_rules.syscall('all').path('/usr/bin/crontab').perm('x').key('privileged-cron').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030561
 

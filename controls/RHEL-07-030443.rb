@@ -33,8 +33,8 @@ Check the file system rule in /etc/audit/rules.d/audit.rules with the following 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030443
-  describe auditd_rules.syscall('all').path('/usr/bin/chcon').action do
-    it { should eq(['always']) }
+  describe auditd_rules.syscall('all').path('/usr/bin/chcon').perm('x').key('privileged-priv_change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030443
 

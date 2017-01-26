@@ -26,13 +26,13 @@ Check for the following system calls being audited by performing the following c
 
 # grep -i /usr/bin/sudoedit /etc/audit/rules.d/audit.rules
 
--a always,exit -F path=/bin/sudoedit-F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-priv_change
+-a always,exit -F path=/bin/sudoedit -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-priv_change
 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030526
-  describe auditd_rules.syscall('all').path('/bin/sudoedit').action do
-    it { should eq(['always']) }
+  describe auditd_rules.syscall('all').path('/bin/sudoedit').perm('x').key('privileged-priv_change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030526
 

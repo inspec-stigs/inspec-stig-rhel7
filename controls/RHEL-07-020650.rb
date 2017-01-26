@@ -45,7 +45,7 @@ If home directories referenced in “/etc/passwd” do not have a mode of “075
   }
 
   interactive_users.each do |interactive_user|
-    describe command("find #{interactive_user['home']} -maxdepth 0 -perm /g=w,o=w,o=r,o=x 2> /dev/null") do
+    describe command("find #{interactive_user['home']} -maxdepth 0 -perm /g=w,o=w+r+x 2> /dev/null") do
       its('stdout') { should eq '' }
     end
   end

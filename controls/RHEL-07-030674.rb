@@ -38,7 +38,7 @@ If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030674
   describe auditd_rules do
-    its('lines') { should include(%r{-w /sbin/modprobe}) }
+    its('lines') { should include(%r{-w /sbin/modprobe -p x .* -k module-change}) }
   end
 # STOP_DESCRIBE RHEL-07-030674
 

@@ -33,7 +33,7 @@ If the “SELinux” mode is not set to “Enforcing”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020210
   describe command('getenforce') do
-    its('stdout') { should eq 'Enforcing' }
+    its('stdout') { should match /^Enforcing/ }
   end
 # STOP_DESCRIBE RHEL-07-020210
 

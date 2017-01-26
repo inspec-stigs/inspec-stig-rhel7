@@ -35,8 +35,8 @@ If the command does not return the following output (appropriate to the architec
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030673
-  describe command('auditctl -l') do
-    its('stdout') { should match /^-w \/sbin\/rmmod -p x -F auid!=-1 -F subj_user=unconfined_u -F subj_role=unconfined_r -F subj_type=unconfined_t -F subj_sen=s0-s0 -F subj_clr=c0\.c1023 -F key=module-change/ }
+  describe auditd_rules do
+    its('lines') { should contain_match(%r{-w /sbin/rmmod -p x .* -k module-change}) }
   end
 # STOP_DESCRIBE RHEL-07-030673
 

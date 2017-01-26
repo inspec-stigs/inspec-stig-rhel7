@@ -33,8 +33,8 @@ Check the file system rule in /etc/audit/rules.d/audit.rules with the following 
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030513
-  describe auditd_rules.syscall('all').path('/usr/bin/chage').action do
-    it { should eq(['always']) }
+  describe auditd_rules.syscall('all').path('/usr/bin/chage').perm('x').key('privileged-passwd').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030513
 

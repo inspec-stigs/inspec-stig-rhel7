@@ -79,15 +79,15 @@ If “firewalld” is active and is not configured to grant access to specific h
 
   describe.one do
     describe command('firewall-cmd --list-all') do
-      its('stdout') { should match /source\s+address=".*"/ }
+      its('stdout') { should match /source\s+address=".+"/ }
     end
 
     describe file('/etc/hosts.allow') do
-      its('content') { should match /^(?!#).*$/ }
+      its('content') { should match /^(?!#).+$/ }
     end
 
     describe file('/etc/hosts.deny') do
-      its('content') { should match /^(?!#).*$/ }
+      its('content') { should match /^(?!#).+$/ }
     end
   end
 # STOP_DESCRIBE RHEL-07-040820
