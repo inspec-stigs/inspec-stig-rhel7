@@ -35,8 +35,9 @@ If the command does not return the following output (appropriate to the architec
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030672
-  describe auditd_rules do
-    its('lines') { should contain_match(%r{-w /sbin/insmod -p x .* -k module-change}) }
+  # These -w should be -a always,exit
+  describe auditd_rules.syscall('all').path('/sbin/insmod').perm('x').key('module-change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030672
 
