@@ -38,7 +38,7 @@ If the command does not return output that does not match the examples, this is 
 
 # START_DESCRIBE RHEL-07-030523
   describe auditd_rules do
-    its('lines') { should include('-w /etc/sudoers.d/ -p wa -F key=privileged-actions') }
+    its('lines') { should include('-w /etc/sudoers.d/ -p wa -k privileged-actions') }
   end
 # STOP_DESCRIBE RHEL-07-030523
 
