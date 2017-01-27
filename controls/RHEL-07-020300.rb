@@ -22,7 +22,7 @@ Check that all referenced GIDs exist with the following command:
 
 # pwck -r
 
-If GIDs referenced in “/etc/passwd” file are returned as not defined in “/etc/group” file, this is a finding.'
+If GIDs referenced in "/etc/passwd" file are returned as not defined in "/etc/group" file, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020300
   describe command('pwck -r') do
