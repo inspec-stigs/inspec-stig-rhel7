@@ -40,7 +40,7 @@ If smartcard authentication is disabled or the smartcard and smartcard removal a
 # START_DESCRIBE RHEL-07-010500
   describe command('authconfig --test') do
     its('stdout') { should match /^smartcard module = ".+"/ }
-    its('stdout') { should match /^martcard removal action = ".+"/ }
+    its('stdout') { should match /^smartcard removal action = ".+"/ }
   end
 # STOP_DESCRIBE RHEL-07-010500
 

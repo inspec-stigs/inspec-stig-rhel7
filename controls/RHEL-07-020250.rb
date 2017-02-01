@@ -40,7 +40,7 @@ If the operating system is in non-compliance with the IAVM process, this is a fi
 
 # START_DESCRIBE RHEL-07-020250
   describe command('yum history') do
-    its('stdout') { should match /(update\s+-y|-y\s+update)/ }
+    its('stdout') { should match /\|\s+(Update|I,\s+U)\s+\|/ }
   end
 # STOP_DESCRIBE RHEL-07-020250
 

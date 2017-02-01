@@ -32,8 +32,8 @@ If the “even_deny_root” setting is not defined on both lines with the pam_fa
 
 # START_DESCRIBE RHEL-07-010373
   describe file('/etc/pam.d/password-auth') do
-    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth\s+silent\s+audit\s+deny=3\s+even_deny_root\s+fail_interval=900/ }
-    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail\s+audit\s+deny=3\s+even_deny_root\s+fail_interval=900/ }
+    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth.*even_deny_root.*$/ }
+    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*even_deny_root.*$/ }
   end
 # STOP_DESCRIBE RHEL-07-010373
 

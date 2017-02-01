@@ -44,7 +44,7 @@ If the “acl” rule is not being used on all selection lines in the “/etc/ai
 
 # START_DESCRIBE RHEL-07-021600
   describe file('/etc/aide.conf') do
-    it { should match /^(?!#).*acl/ }
+    its('content') { should match /^(?!#).*\s*=\s*.*acl.*$/ }
   end
 # STOP_DESCRIBE RHEL-07-021600
 

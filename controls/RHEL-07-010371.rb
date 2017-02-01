@@ -34,8 +34,8 @@ If the “fail_interval” setting is greater than 900 on both lines with the pa
 
 # START_DESCRIBE RHEL-07-010371
   describe file('/etc/pam.d/password-auth') do
-    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth\s+silent\s+audit\s+deny=3\s+even_deny_root\s+fail_interval=(\d{1,2}|[0-8]\d{2}|900)$/ }
-    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail\s+audit\s+deny=3\s+even_deny_root\s+fail_interval=(\d{1,2}|[0-8]\d{2}|900)$/ }
+    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth.*fail_interval=([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|900)(\s+.*)?$/ }
+    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*fail_interval=([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|900)(\s+.*)?$/ }
   end
 # STOP_DESCRIBE RHEL-07-010371
 

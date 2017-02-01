@@ -33,9 +33,16 @@ Check the /etc/cron.daily subdirectory for a crontab file controlling the execut
 If the file integrity application is not executed on the system with the required frequency, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020130
-  describe command('grep -r "aide --check" /etc/cron*') do
-    its('stdout') { should match /aide --check/ }
-    its('exit_status') { should eq 0 }
+  describe.one do
+    describe command('grep -r "aide --check" /etc/cron*') do
+      its('stdout') { should match /aide --check/ }
+      its('exit_status') { should eq 0 }
+    end
+
+    describe command('crontab -u root -l') do
+      its('stdout') { should match /aide --check/ }
+      its('exit_status') { should eq 0 }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020130
 

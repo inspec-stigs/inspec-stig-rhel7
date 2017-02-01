@@ -30,7 +30,6 @@ If a rule with both the limit and limit-burst arguments parameters does not exis
 # START_DESCRIBE RHEL-07-040250
   describe command('firewall-cmd --direct --get-rule ipv4 filter IN_public_allow') do
     its('stdout') { should match /0 -m tcp -p tcp -m limit --limit 25\/minute --limit-burst 100 -j ACCEPT/ }
-    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040250
 

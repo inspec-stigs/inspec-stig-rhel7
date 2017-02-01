@@ -40,7 +40,7 @@ If the directory does not exist or the option is commented out, this is a findin
 
 # START_DESCRIBE RHEL-07-040181
   ldap_auth_enabled = command('grep -i USELDAPAUTH=yes /etc/sysconfig/authconfig').exit_status
-  if ldap_auth_enabled
+  if ldap_auth_enabled == 0
     describe file('/etc/pam_ldap.conf') do
       its('content') { should match /^tls_cacertdir\s+\/etc\/openldap\/certs$/ }
     end
