@@ -34,7 +34,7 @@ If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030491
   describe auditd_rules do
-    its('lines') { should include('-w /var/run/faillock\/? -p wa -k logins') }
+    its('lines') { should contain_match(%r{'-w /var/run/faillock/? -p wa -k logins'}) }
   end
 # STOP_DESCRIBE RHEL-07-030491
 

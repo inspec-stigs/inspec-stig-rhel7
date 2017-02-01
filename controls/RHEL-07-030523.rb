@@ -38,7 +38,11 @@ If the command does not return output that does not match the examples, this is 
 
 # START_DESCRIBE RHEL-07-030523
   describe auditd_rules do
-    its('lines') { should contain_match(%r{-w /etc/sudoers.d/? -p wa -k privileged-actions}) }
+    its('lines') { contain_match(%r{-w /etc/sudoers -p wa -k privileged-actions}) }
+  end
+
+  describe auditd_rules do
+    its('lines') { contain_match(%r{-w /etc/sudoers.d/? -p wa -k privileged-actions}) }
   end
 # STOP_DESCRIBE RHEL-07-030523
 
