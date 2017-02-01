@@ -37,12 +37,12 @@ Check for modification of the following files being audited by performing the fo
 If the command does not return output that does not match the examples, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030523
-  describe auditd_rules do
-    its('lines') { contain_match(%r{-w /etc/sudoers -p wa -k privileged-actions}) }
+  describe command('auditctl -l') do
+    its('stdout') { should match /-w \/etc\/sudoers -p wa -k privileged-actions/ }
   end
 
-  describe auditd_rules do
-    its('lines') { contain_match(%r{-w /etc/sudoers.d/? -p wa -k privileged-actions}) }
+  describe command('auditctl -l') do
+    its('stdout') { should match /-w \/etc\/sudoers.d\/? -p wa -k privileged-actions/ }
   end
 # STOP_DESCRIBE RHEL-07-030523
 
