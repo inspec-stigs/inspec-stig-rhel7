@@ -43,6 +43,10 @@ All= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
 If the “acl” rule is not being used on all selection lines in the “/etc/aide.conf” file, or acls are not being checked by another file integrity tool, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021600
+  describe package('aide') do
+    it { should be_installed }
+  end
+
   describe file('/etc/aide.conf') do
     its('content') { should match /^(?!#).*\s*=\s*.*acl.*$/ }
   end
