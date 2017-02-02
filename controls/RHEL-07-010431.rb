@@ -35,8 +35,11 @@ TimedLoginEnable=false
 If the value of “TimedLoginEnable” is not set to “false”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010431
-  describe file('') do
-    it { should match // }
+  custom_conf_exists = file('/etc/gdm/custom.conf').file?
+  if custom_conf_exists
+    describe file('/etc/gdm/custom.conf') do
+      its('content') { should match /^TimedLoginEnable=false$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010431
 

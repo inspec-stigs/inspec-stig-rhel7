@@ -33,8 +33,8 @@ Check for the following system calls being audited by performing the following s
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030530
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('all').path('/bin/mount').perm('x').key('privileged-mount').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030530
 

@@ -31,8 +31,8 @@ Check to see if the telnet-server package is installed with the following comman
 If the telnet-server package is installed, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021910
-  describe file('') do
-    it { should match // }
+  describe package('telnet-server') do
+    it { should_not be_installed }
   end
 # STOP_DESCRIBE RHEL-07-021910
 

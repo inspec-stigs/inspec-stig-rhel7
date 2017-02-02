@@ -30,8 +30,8 @@ KerberosAuthentication no
 If the “KerberosAuthentication” keyword is missing, or is set to "yes" and is not documented with the Information System Security Officer (ISSO), or the returned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040670
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('KerberosAuthentication') { should eq 'no' }
   end
 # STOP_DESCRIBE RHEL-07-040670
 

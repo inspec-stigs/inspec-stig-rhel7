@@ -29,8 +29,9 @@ Check for the status with the following command:
 If network interfaces are found on the system in promiscuous mode and their use has not been approved by the ISSM and documented, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040470
-  describe file('') do
-    it { should match // }
+  describe command('ip link | grep -i promisc') do
+    its('stdout') { should match /^$/ }
+    its('exit_status') { should eq 1 }
   end
 # STOP_DESCRIBE RHEL-07-040470
 

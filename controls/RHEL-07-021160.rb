@@ -43,8 +43,8 @@ If rsyslog is not logging messages for the cron facility or all facilities, this
 If the entry is in the “/etc/rsyslog.conf” file but is after the entry: *.*\', this is a finding.'
 
 # START_DESCRIBE RHEL-07-021160
-  describe file('') do
-    it { should match // }
+  describe file('/etc/rsyslog.conf') do
+    its('content') { should match /^(?:cron|\*)\.\*\s+\/var\/log\/(?:cron.log|messages)$/ }
   end
 # STOP_DESCRIBE RHEL-07-021160
 

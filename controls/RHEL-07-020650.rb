@@ -37,8 +37,17 @@ drwxr-x---  1 smithj users        860 Nov 28 06:43 smithj
 If home directories referenced in “/etc/passwd” do not have a mode of “0750” or less permissive, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020650
-  describe file('') do
-    it { should match // }
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "home" => interactive_user.split(":")[1]
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    describe command("find #{interactive_user['home']} -maxdepth 0 -perm /g=w,o=w+r+x 2> /dev/null") do
+      its('stdout') { should eq '' }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020650
 

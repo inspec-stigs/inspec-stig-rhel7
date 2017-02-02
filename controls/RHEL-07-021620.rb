@@ -45,8 +45,12 @@ All=p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux
 If the “sha512” rule is not being used on all selection lines in the “/etc/aide.conf” file, or another file integrity tool is not using FIPS 140-2 approved cryptographic hashes for validating file contents and directories, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021620
-  describe file('') do
-    it { should match // }
+  describe package('aide') do
+    it { should be_installed }
+  end
+
+  describe file('/etc/aide.conf') do
+    its('content') { should match /^(?!#).*\s*=\s*.*sha512.*$/ }
   end
 # STOP_DESCRIBE RHEL-07-021620
 

@@ -29,8 +29,8 @@ Protocol 2
 If any protocol line other than "Protocol 2" is uncommented, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040590
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('Protocol') { should eq '2' }
   end
 # STOP_DESCRIBE RHEL-07-040590
 

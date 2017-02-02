@@ -30,8 +30,9 @@ FAIL_DELAY 4
 If the value of “FAIL_DELAY” is not set to “4” or greater, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010420
-  describe file('') do
-    it { should match // }
+  fail_delay = command('grep -i "^FAIL_DELAY" /etc/login.defs | grep -oE "[0-9]+"').stdout.strip()
+  describe command("if [ #{fail_delay} -ge 4 ]; then exit 0; else exit 1; fi") do
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-010420
 

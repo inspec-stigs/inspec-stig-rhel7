@@ -41,8 +41,15 @@ conn mytunnel
 If there are indications that a “conn” parameter is configured for a tunnel, ask the System Administrator (SA) if the tunnel is documented with the ISSO. If “libreswan” is installed, “IPsec” is active, and an undocumented tunnel is active, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040830
-  describe file('') do
-    it { should match // }
+  ipsec_conf_exists = file('/etc/ipsec.conf').file?
+  if ipsec_conf_exists && service('ipsec').running?
+    describe file('/etc/ipsec.conf') do
+      its('content') { should_not match /^conn.*$/ }
+    end
+
+    describe command('grep -rE "^conn.*$" /etc/ipsec.d/*') do
+      its('exit_status') { should eq 1 }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040830
 

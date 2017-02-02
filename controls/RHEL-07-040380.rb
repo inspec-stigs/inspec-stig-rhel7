@@ -28,8 +28,8 @@ net.ipv4.icmp_echo_ignore_broadcasts=1
 If the returned line does not have a value of “1”, a line is not returned, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040380
-  describe file('') do
-    it { should match // }
+  describe kernel_parameter('net.ipv4.icmp_echo_ignore_broadcasts') do
+    its('value') { should eq 1 }
   end
 # STOP_DESCRIBE RHEL-07-040380
 

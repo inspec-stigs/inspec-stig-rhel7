@@ -44,8 +44,22 @@ Check the group owner of all local interactive users’ initialization files wit
 If all local interactive users’ initialization files are not group-owned by that user’s primary GID, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020850
-  describe file('') do
-    it { should match // }
+  find_cmd = "find %{file} -mindepth 1 -type f -prune -name '.*' ! -name '*.swp' 2> /dev/null"
+  group_cmd = "id -gn %{username}"
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "group" => command(group_cmd % {username: interactive_user.split(":")[0]}).stdout.strip(),
+    "init_files" => command(find_cmd % {file: interactive_user.split(":")[1]}).stdout.split("\n")
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    interactive_user['init_files'].each do |init_file|
+      describe file(init_file) do
+        it { should be_grouped_into interactive_user['group'] }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-020850
 

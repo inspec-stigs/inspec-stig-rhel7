@@ -31,8 +31,9 @@ control 'RHEL-07-040261' do
 If “sshd” does not show a status of “active” and “running”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040261
-  describe file('') do
-    it { should match // }
+  describe service('sshd') do
+    it { should be_running }
+    it { should be_enabled }
   end
 # STOP_DESCRIBE RHEL-07-040261
 

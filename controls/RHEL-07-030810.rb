@@ -36,8 +36,16 @@ If the “nails” service is not active, check for the presence of “clamav”
 If neither of these applications are loaded and active, ask the System Administrator (SA) if there is an antivirus package installed and active on the system. If no antivirus scan program is active on the system, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030810
-  describe file('') do
-    it { should match // }
+  describe.one do
+    describe service('nails') do
+      it { should be_running }
+      it { should be_enabled }
+    end
+
+    describe service('clamav-daemon') do
+      it { should be_running }
+      it { should be_enabled }
+    end
   end
 # STOP_DESCRIBE RHEL-07-030810
 

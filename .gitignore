@@ -2,3 +2,5 @@ inspec.deb
 inspec.rpm
 .vagrant
 inspec.lock
+.idea
+.DS_Store

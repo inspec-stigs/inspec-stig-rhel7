@@ -37,8 +37,17 @@ drwxr-x---  1 smithj users        860 Nov 28 06:43 smithj
 If user home directory referenced in “/etc/passwd” is not owned by that user, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020660
-  describe file('') do
-    it { should match // }
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "home" => interactive_user.split(":")[1]
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    describe file(interactive_user['home']) do
+      it { should be_owned_by interactive_user['username'] }
+    end
   end
 # STOP_DESCRIBE RHEL-07-020660
 

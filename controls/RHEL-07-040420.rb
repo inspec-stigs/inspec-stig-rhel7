@@ -30,8 +30,8 @@ net.ipv4.conf.default.send_redirects=0
 If the returned line does not have a value of “0”, a line is not returned, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040420
-  describe file('') do
-    it { should match // }
+  describe kernel_parameter('net.ipv4.conf.default.send_redirects') do
+    its('value') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040420
 

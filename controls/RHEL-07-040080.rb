@@ -28,8 +28,11 @@ Check the group owner on the cn_map file with the following command:
 If the cn_map file has a group owner other than root, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040080
-  describe file('') do
-    it { should match // }
+  is_pam_pkcs11_installed = package('pam_pkcs11').installed?
+  if is_pam_pkcs11_installed
+    describe file('/etc/pam_pkcs11/cn_map') do
+      it { should be_grouped_into 'root' }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040080
 

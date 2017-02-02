@@ -33,8 +33,8 @@ Check for the following system call being audited by performing the following co
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030540
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('all').path('/usr/sbin/postdrop').perm('x').key('privileged-postfix').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030540
 

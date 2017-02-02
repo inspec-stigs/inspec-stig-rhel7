@@ -30,8 +30,8 @@ This can be set as a global domain (with the * wildcard) but may be set differen
 If the maxlogins item is missing or the value is not set to 10 or less for all domains that have the maxlogins item assigned, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040010
-  describe file('') do
-    it { should match // }
+  describe file('/etc/security/limits.conf') do
+    its('content') { should match /^.+\s+hard\s+maxlogins\s+([0-9]|10)$/ }
   end
 # STOP_DESCRIBE RHEL-07-040010
 

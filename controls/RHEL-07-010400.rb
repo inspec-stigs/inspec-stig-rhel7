@@ -53,8 +53,11 @@ memcache_timeout = 86400
 If the “memcache_timeout” is set to a value greater than “86400”, is commented out, or is missing, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010400
-  describe file('') do
-    it { should match // }
+  is_sssd_running = service('sssd').running?
+  if is_sssd_running and file('/etc/sssd/sssd.conf').content.match(/^services\s*=\s*.*nss.*$/)
+    describe file('/etc/sssd/sssd.conf') do
+      its('content') { should match /^memcache_timeout\s*=\s*([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[1-7][0-9]{4}|8[0-5][0-9]{3}|86[0-3][0-9]{2}|86400)$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010400
 

@@ -33,8 +33,16 @@ An alternate method of determining if a TFTP server is active on the server is t
 If TFTP is installed and the requirement for TFTP is not documented with the ISSM, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040500
-  describe file('') do
-    it { should match // }
+  describe package('tftp') do
+    it { should_not be_installed }
+  end
+
+  describe port('69') do
+    it { should_not be_listening }
+  end
+
+  describe port('8099') do
+    it { should_not be_listening }
   end
 # STOP_DESCRIBE RHEL-07-040500
 

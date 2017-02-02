@@ -30,8 +30,8 @@ TMOUT=600
 If “TMOUT” is not set to 600 or less in /etc/profile, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040160
-  describe file('') do
-    it { should match // }
+  describe command('grep -rE "^(export\s+)?TMOUT=([0-9]|[1-8][0-9]|9[0-9]|[1-5][0-9]{2}|600$)$" /etc/profile*') do
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040160
 

@@ -28,8 +28,8 @@ UsePrivilegeSeparation yes
 If the “UsePrivilegeSeparation” keyword is set to "no", is missing, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040690
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('UsePrivilegeSeparation') { should eq 'yes' }
   end
 # STOP_DESCRIBE RHEL-07-040690
 

@@ -31,8 +31,14 @@ auth        [default=die]  pam_faillock.so authfail audit deny=3 even_deny_root 
 If the “even_deny_root” setting is not defined on both lines with the pam_faillock.so module name, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010373
-  describe file('') do
-    it { should match // }
+  describe file('/etc/pam.d/system-auth') do
+    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth.*even_deny_root.*$/ }
+    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*even_deny_root.*$/ }
+  end
+
+  describe file('/etc/pam.d/password-auth') do
+    its('content') { should match /^auth\s+required\s+pam_faillock\.so\s+preauth.*even_deny_root.*$/ }
+    its('content') { should match /^auth\s+\[default=die\]\s+pam_faillock\.so\s+authfail.*even_deny_root.*$/ }
   end
 # STOP_DESCRIBE RHEL-07-010373
 

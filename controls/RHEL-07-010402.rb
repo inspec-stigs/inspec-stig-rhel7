@@ -40,21 +40,24 @@ Check the services option for the active services of each domain configured with
 
 The command will return one line for each domain. In the example:
 
-services = nss, pam
-services = nss, pam
+services = nss, ssh
+services = nss, ssh
 
-There are two services lines as the “nss” and “pam” services are being used by two domains (ldap and local).
+There are two services lines as the “nss” and “ssh” services are being used by two domains (ldap and local).
 
-If “pam” is an active service, check the “offline_credentials_expiration” option with the following command:
+If “ssh” is an active service, check the “ssh_known_hosts_timeout” option with the following command:
 
-# grep -i offline_credentials_expiration /etc/sssd/sssd.conf 
-offline_credentials_expiration = 1
+# grep -i ssh_known_hosts_timeout /etc/sssd/sssd.conf 
+ssh_known_hosts_timeout = 86400
 
-If “offline_credentials_expiration” is set to a value greater than “1”, is commented out, or is missing, this is a finding.'
+If “ssh_known_hosts_timeout” is set to a value greater than “86400”, is commented out, or is missing, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010402
-  describe file('') do
-    it { should match // }
+  is_sssd_running = service('sssd').running?
+  if is_sssd_running and file('/etc/sssd/sssd.conf').content.match(/^services\s*=\s*.*ssh.*$/)
+    describe file('/etc/sssd/sssd.conf') do
+      its('content') { should match /^ssh_known_hosts_timeout\s*=\s*([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[1-7][0-9]{4}|8[0-5][0-9]{3}|86[0-3][0-9]{2}|86400)$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010402
 

@@ -26,8 +26,8 @@ UUID=c274f65f    /var                    ext4    noatime,nobarrier        1 2
 If a separate entry for /var is not in use, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021250
-  describe file('') do
-    it { should match // }
+  describe file('/etc/fstab') do
+    its('content') { should match /\/var/ }
   end
 # STOP_DESCRIBE RHEL-07-021250
 

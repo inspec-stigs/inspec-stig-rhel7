@@ -26,8 +26,11 @@ control 'RHEL-07-040050' do
 If the file does not exist, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040050
-  describe file('') do
-    it { should match // }
+  is_pam_pkcs11_installed = package('pam_pkcs11').installed?
+  if is_pam_pkcs11_installed
+    describe file('/etc/pam_pkcs11/subject_mapping') do
+      it { should exist }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040050
 

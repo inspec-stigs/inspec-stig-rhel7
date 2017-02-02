@@ -31,8 +31,8 @@ ClientAliveInterval 600
 If “ClientAliveInterval” is not set to “600” in /etc/ ssh/sshd_config, and a lower value is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040190
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('ClientAliveInterval') { should eq '600' }
   end
 # STOP_DESCRIBE RHEL-07-040190
 

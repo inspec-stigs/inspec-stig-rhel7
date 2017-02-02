@@ -37,8 +37,8 @@ install usb-storage /bin/true
 If the command does not return any output, and use of USB storage devices is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020160
-  describe file('') do
-    it { should match // }
+  describe command('grep -rE "install\s+usb-storage\s+/bin/true" /etc/modprobe.d/*') do
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-020160
 

@@ -31,8 +31,20 @@ Note: The example is for a system that is configured to create users home direct
 If any local interactive user initialization files are found to have a umask statement that has a value less restrictive than “077”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021060
-  describe file('') do
-    it { should match // }
+  find_cmd = "find %{file} -mindepth 1 -type f -prune -name '.*' ! -name '*.swp' 2> /dev/null"
+  interactive_users = command('for i in $(ls -1 /home* && grep -v home /etc/passwd | cut -d: -f1); do getent passwd $i | awk -F\':\' \'!/nologin|false/ {if ($7 !~ $1) print $1":"$6}\'; done | sort -u').stdout.split("\n")
+  interactive_users.map! { |interactive_user| {
+    "username" => interactive_user.split(":")[0],
+    "init_files" => command(find_cmd % {file: interactive_user.split(":")[1]}).stdout.split("\n")
+    }
+  }
+
+  interactive_users.each do |interactive_user|
+    interactive_user['init_files'].each do |init_file|
+      describe file(init_file) do
+        its('content') { should_not match /^umask\s+[0-6]{1,3}$/ }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-021060
 
