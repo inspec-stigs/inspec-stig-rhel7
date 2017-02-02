@@ -31,7 +31,7 @@ If the X11Forwarding keyword is set to "no", is missing, or is commented out, th
 
 # START_DESCRIBE RHEL-07-040540
   describe sshd_config do
-    its('X11Fowarding') { should eq 'yes' }
+    its('X11Forwarding') { should eq 'yes' }
   end
 # STOP_DESCRIBE RHEL-07-040540
 
