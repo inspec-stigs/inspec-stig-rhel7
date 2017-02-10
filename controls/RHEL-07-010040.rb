@@ -4,8 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
-banner_message_text1 = attribute('banner_message_text', default: '^You are accessing', description: 'text to match for banner message')
-banner_message_text2 = attribute('banner_message_text', default: 'Unauthorized use of this system is strictly prohibited', description: 'text to match for banner message')
+banner_message_text = attribute('banner_message_text', default: '^You are accessing', description: 'text to match for banner message')
 
 title 'RHEL-07-010040 - The operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon.'
 control 'RHEL-07-010040' do
@@ -61,14 +60,8 @@ If the operating system does not display a graphical logon banner or the banner 
 If the text in the /etc/issue file does not match the Standard Mandatory DoD Notice and Consent Banner, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010040
-  describe.one do
-    describe file('/etc/issue') do
-      its('content') { should match /#{banner_message_text1}/ }
-    end
-
-    describe file('/etc/issue') do
-      its('content') { should match /#{banner_message_text2}/ }
-    end
+  describe file('/etc/issue') do
+    its('content') { should match /#{banner_message_text}/ }
   end
 # STOP_DESCRIBE RHEL-07-010040
 

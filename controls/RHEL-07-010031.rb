@@ -4,8 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
-banner_message_text1 = attribute('banner_message_text', default: '^You are accessing', description: 'text to match for banner message')
-banner_message_text2 = attribute('banner_message_text', default: 'Unauthorized use of this system is strictly prohibited', description: 'text to match for banner message')
+banner_message_text = attribute('banner_message_text', default: '^You are accessing', description: 'text to match for banner message')
 
 title 'RHEL-07-010031 - The operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.'
 control 'RHEL-07-010031' do
@@ -68,14 +67,8 @@ If the banner does not match the approved Standard Mandatory DoD Notice and Cons
 
 # START_DESCRIBE RHEL-07-010031
   if package('gnome-desktop3').installed?
-    describe.one do
-      describe command('grep banner-message-text /etc/dconf/db/local.d/*') do
-        its('stdout') { should match /#{banner_message_text1}/ }
-      end
-
-      describe command('grep banner-message-text /etc/dconf/db/local.d/*') do
-        its('stdout') { should match /#{banner_message_text2}/ }
-      end
+    describe command('grep banner-message-text /etc/dconf/db/local.d/*') do
+      its('stdout') { should match /#{banner_message_text}/ }
     end
   end
 # STOP_DESCRIBE RHEL-07-010031
