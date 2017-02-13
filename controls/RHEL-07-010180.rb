@@ -31,7 +31,7 @@ If the /etc/login.defs configuration file does not exist or allows for password 
 
 # START_DESCRIBE RHEL-07-010180
   options = {
-    assignment_re: /^(\w+)\s+(\w+?)$/
+    assignment_re: /^(\w+)\s+(\w+?)\s*$/
   }
   describe parse_config_file('/etc/login.defs', options) do
     its('ENCRYPT_METHOD') { should eq 'SHA512' }
