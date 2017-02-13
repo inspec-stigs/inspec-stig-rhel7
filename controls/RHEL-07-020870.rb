@@ -29,9 +29,10 @@ Note: The example will be for the smithj user, which has a home directory of “
 If any local interactive user initialization files have path statements that include directories outside of their home directory, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020870
-  describe file('') do
-    it { should match // }
-  end
+#  TODO: Complete this finding
+#  describe file('') do
+#    it { should match // }
+#  end
 # STOP_DESCRIBE RHEL-07-020870
 
 end

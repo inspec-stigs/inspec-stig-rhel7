@@ -42,8 +42,46 @@ If the file does not exist, this is a finding.
 If the option is set to “17” or is not set, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040210
-  describe file('') do
-    it { should match // }
+  describe.one do
+    describe service('ntpd') do
+      it { should be_running }
+      it { should be_enabled }
+    end
+
+    describe service('chronyd') do
+      it { should be_running }
+      it { should be_enabled }
+    end
+  end
+
+  begin
+    ntpd_lines = file('/etc/ntp.conf').content.split("\n")
+  rescue NoMethodError
+    ntpd_lines = []
+  end
+
+  begin
+    chrony_lines = file('/etc/chrony.conf').content.split("\n")
+  rescue NoMethodError
+    chrony_lines = []
+  end
+
+  describe.one do
+    ntpd_lines.each do |ntpd_line|
+      if ntpd_line =~ /^\s*server/ and ntpd_line !~ /^#/
+        describe command("echo '#{ntpd_line}'") do
+          its('stdout') { should match /maxpoll\s+10/ }
+        end
+      end
+    end
+
+    chrony_lines.each do |chrony_line|
+      if chrony_line =~ /^\s*server/ and chrony_line !~ /^#/
+        describe command("echo '#{chrony_line}'") do
+          its('stdout') { should match /maxpoll\s+10/ }
+        end
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-040210
 

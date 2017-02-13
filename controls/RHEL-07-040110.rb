@@ -40,8 +40,8 @@ Ciphers aes128-ctr aes192-ctr, aes256-ctr
 If any ciphers other than “aes128-ctr”, “aes192-ctr”, or “aes256-ctr” are listed, the “Ciphers” keyword is missing, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040110
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('Ciphers') { should eq 'aes128-ctr,aes192-ctr,aes256-ctr' }
   end
 # STOP_DESCRIBE RHEL-07-040110
 

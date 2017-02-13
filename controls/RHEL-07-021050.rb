@@ -27,11 +27,24 @@ drwxrwxrwt. 2 root root 40 Aug 26 13:07 /dev/mqueue
 drwxrwxrwt. 2 root root 220 Aug 26 13:23 /dev/shm
 drwxrwxrwt. 14 root root 4096 Aug 26 13:29 /tmp
 
-If any world-writable directories are not owned by root, sys, bin, or an application group associated with the directory, this is a finding.'
+If any world-writable directories are not owned by root, sys, sys, or an application group associated with the directory, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021050
-  describe file('') do
-    it { should match // }
+  world_writable_dirs = command('find / -perm -002 -type d ! -fstype vboxsf 2> /dev/null').stdout.split("\n")
+  world_writable_dirs.each do |world_writable_dir|
+    describe.one do
+      describe file(world_writable_dir) do
+        it { should be_grouped_into 'root' }
+      end
+
+      describe file(world_writable_dir) do
+        it { should be_grouped_into 'sys' }
+      end
+
+      describe file(world_writable_dir) do
+        it { should be_grouped_into 'sys' }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-021050
 

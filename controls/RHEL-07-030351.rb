@@ -30,8 +30,8 @@ space_left_action = email
 If the value of the “space_left_action” keyword is not set to email, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030351
-  describe file('') do
-    it { should match // }
+  describe auditd_conf do
+    its('space_left_action') { should eq 'email' }
   end
 # STOP_DESCRIBE RHEL-07-030351
 

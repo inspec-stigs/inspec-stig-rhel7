@@ -28,8 +28,8 @@ gpgcheck=1
 If "gpgcheck" is not set to ”1”, or if options are missing or commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020150
-  describe file('') do
-    it { should match // }
+  describe file('/etc/yum.conf') do
+    its('content') { should match /^gpgcheck=(1|True|yes)$/ }
   end
 # STOP_DESCRIBE RHEL-07-020150
 

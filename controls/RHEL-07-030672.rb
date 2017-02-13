@@ -35,8 +35,9 @@ If the command does not return the following output (appropriate to the architec
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030672
-  describe file('') do
-    it { should match // }
+  # These -w should be -a always,exit
+  describe auditd_rules.syscall('all').path('/sbin/insmod').perm('x').key('module-change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030672
 

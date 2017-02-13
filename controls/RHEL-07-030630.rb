@@ -33,8 +33,8 @@ Check the auditing rules in /etc/audit/rules.d/audit.rules with the following co
 If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030630
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('all').path('/sbin/pam_timestamp_check').perm('x').key('privileged-pam').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030630
 

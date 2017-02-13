@@ -34,8 +34,20 @@ If the “SSH server” package is not installed, this is a finding.
 If the “SSH client” package is not installed, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040260
-  describe file('') do
-    it { should match // }
+  describe package('libssh2') do
+    it { should be_installed }
+  end
+
+  describe package('openssh') do
+    it { should be_installed }
+  end
+
+  describe package('openssh-clients') do
+    it { should be_installed }
+  end
+
+  describe package('openssh-server') do
+    it { should be_installed }
   end
 # STOP_DESCRIBE RHEL-07-040260
 

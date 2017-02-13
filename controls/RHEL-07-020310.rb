@@ -25,8 +25,9 @@ If the account is associated with system commands or applications, the UID shoul
 If any accounts other than root have a UID of “0”, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020310
-  describe file('') do
-    it { should match // }
+  describe passwd.uids(0) do
+    its('users') { should cmp 'root' }
+    its('entries.length') { should eq 1 }
   end
 # STOP_DESCRIBE RHEL-07-020310
 

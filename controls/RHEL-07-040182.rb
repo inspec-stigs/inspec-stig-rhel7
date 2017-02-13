@@ -37,8 +37,11 @@ Verify the “tls_cacertfile” option points to a file that contains the truste
 If this file does not exist, or the option is commented out or missing, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040182
-  describe file('') do
-    it { should match // }
+  ldap_auth_enabled = command('grep -i USELDAPAUTH=yes /etc/sysconfig/authconfig').exit_status
+  if ldap_auth_enabled == 0
+    describe file('/etc/pam_ldap.conf') do
+      its('content') { should match /^tls_cacertfile\s+.*\.pem$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-040182
 

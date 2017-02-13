@@ -27,8 +27,8 @@ Check the owner of all files and directories with the following command:
 If any files on the system do not have an assigned owner, this is a finding.'
 
 # START_DESCRIBE RHEL-07-020360
-  describe file('') do
-    it { should match // }
+  describe command('find / -xdev -nouser -fstype local 2> /dev/null') do
+    its('stdout') { should eq '' }
   end
 # STOP_DESCRIBE RHEL-07-020360
 

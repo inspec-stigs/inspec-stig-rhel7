@@ -30,8 +30,8 @@ HostbasedAuthentication no
 If the “HostbasedAuthentication” keyword is not set to “no”, is missing, or is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010442
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('HostbasedAuthentication') { should eq 'no' }
   end
 # STOP_DESCRIBE RHEL-07-010442
 

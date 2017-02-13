@@ -19,20 +19,20 @@ control 'RHEL-07-040333' do
 
 Add the following line in "/etc/ssh/sshd_config", or uncomment the line and set the value to yes:
 
-RhostsRSAAuthentication yes'
+RhostsRSAAuthentication no'
   tag checktext: 'Verify the SSH daemon does not allow authentication using RSA rhosts authentication.
 
 To determine how the SSH daemon\'s "RhostsRSAAuthentication" option is set, run the following command:
 
 # grep -i IgnoreUserKnownHosts /etc/ssh/sshd_config
 
-RhostsRSAAuthentication yes
+RhostsRSAAuthentication no
 
-If the value is returned as “no”, the returned line is commented out, or no output is returned, this is a finding.'
+If the value is returned as “yes”, the returned line is commented out, or no output is returned, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040333
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('RhostsRSAAuthentication') { should eq 'no' }
   end
 # STOP_DESCRIBE RHEL-07-040333
 

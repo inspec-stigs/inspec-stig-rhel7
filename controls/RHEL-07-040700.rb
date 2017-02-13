@@ -28,8 +28,8 @@ Compression delayed
 If the “Compression” keyword is set to “yes”, is missing, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040700
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('Compression') { should match /^(delayed|no)$/ }
   end
 # STOP_DESCRIBE RHEL-07-040700
 

@@ -32,8 +32,12 @@ An alternate method of determining if a lightweight FTP server is active on the 
 If “lftpd” is installed, or if an application is listening on port 21, and is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040490
-  describe file('') do
-    it { should match // }
+  describe package('lftpd') do
+    it { should_not be_installed }
+  end
+
+  describe port(21) do
+    it { should_not be_listening }
   end
 # STOP_DESCRIBE RHEL-07-040490
 

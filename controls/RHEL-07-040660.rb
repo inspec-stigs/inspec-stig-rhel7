@@ -30,8 +30,8 @@ GSSAPIAuthentication no
 If the “GSSAPIAuthentication” keyword is missing, is set to “yes” and is not documented with the Information System Security Officer (ISSO), or the returned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040660
-  describe file('') do
-    it { should match // }
+  describe sshd_config do
+    its('GSSAPIAuthentication') { should eq 'no' }
   end
 # STOP_DESCRIBE RHEL-07-040660
 

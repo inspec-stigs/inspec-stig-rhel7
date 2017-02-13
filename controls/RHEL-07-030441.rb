@@ -35,8 +35,8 @@ If the command does not return the following output, this is a finding.
 -F perm=x -F auid>=1000 -F auid!=4294967295 -F subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -k privileged-priv_change'
 
 # START_DESCRIBE RHEL-07-030441
-  describe file('') do
-    it { should match // }
+  describe auditd_rules.syscall('all').path('/usr/sbin/semanage').perm('x').key('privileged-priv_change').action('always').list do
+    it { should eq(['exit']) }
   end
 # STOP_DESCRIBE RHEL-07-030441
 

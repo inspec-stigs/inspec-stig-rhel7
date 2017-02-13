@@ -47,8 +47,8 @@ nameserver 192.168.1.3
 If less than two lines are returned that are not commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040320
-  describe file('') do
-    it { should match // }
+  describe command('[ `grep -c "^nameserver" /etc/resolv.conf` -ge 2 ]') do
+    its('exit_status') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040320
 

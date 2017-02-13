@@ -53,8 +53,11 @@ offline_credentials_expiration = 1
 If “pam” is not an active service, this requirement is Not Applicable.'
 
 # START_DESCRIBE RHEL-07-010401
-  describe file('') do
-    it { should match // }
+  is_sssd_running = service('sssd').running?
+  if is_sssd_running and file('/etc/sssd/sssd.conf').content.match(/^services\s*=\s*.*pam.*$/)
+    describe file('/etc/sssd/sssd.conf') do
+      its('content') { should match /^offline_credentials_expiration\s*=\s*1$/ }
+    end
   end
 # STOP_DESCRIBE RHEL-07-010401
 

@@ -28,8 +28,18 @@ To check if the system is importing an NFS file system, look for any entries in 
 If the system is mounting file systems via NFS and has the sec option without the “krb5:krb5i:krb5p” settings, the sec option has the “sys” setting, or the “sec” option is missing, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040740
-  describe file('') do
-    it { should match // }
+  begin
+    fstab_lines = file('/etc/fstab').content.split("\n")
+  rescue NoMethodError
+    fstab_lines = []
+  end
+
+  fstab_lines.each do |fstab_line|
+    if fstab_line.include? 'nfs' and fstab_line !~ /^#/
+      describe command("echo '#{fstab_line}'") do
+        its('stdout') { should match /sec=(krb5p|krb5i|krb5)/ }
+      end
+    end
   end
 # STOP_DESCRIBE RHEL-07-040740
 

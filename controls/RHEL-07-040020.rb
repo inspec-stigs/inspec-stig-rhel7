@@ -34,8 +34,10 @@ daemon.notice /var/log/messages
 If the auth, authpriv, and daemon facilities are not being logged, or they are being logged at a priority of notice or higher, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040020
-  describe file('') do
-    it { should match // }
+  describe file('/etc/rsyslog.conf') do
+    its('content') { should match /auth\.\*|auth.+debug\s+\/var\/log\/auth\.log/ }
+    its('content') { should match /authpriv\.\*|authpriv.+debug\s+\/var\/log\/auth\.log/ }
+    its('content') { should match /^daemon\.notice\s+\/var\/log\/messages/ }
   end
 # STOP_DESCRIBE RHEL-07-040020
 

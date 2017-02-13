@@ -30,8 +30,8 @@ net.ipv6.conf.all.accept_source_route=0
 If the returned lines do not have a value of “0”, a line is not returned, or the retuned line is commented out, this is a finding.'
 
 # START_DESCRIBE RHEL-07-040860
-  describe file('') do
-    it { should match // }
+  describe kernel_parameter('net.ipv6.conf.all.accept_source_route') do
+    its('value') { should eq 0 }
   end
 # STOP_DESCRIBE RHEL-07-040860
 

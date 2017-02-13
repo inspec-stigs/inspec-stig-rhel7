@@ -40,8 +40,9 @@ reboot.target - Reboot
 If the ctrl-alt-del.service is active , this is a finding.'
 
 # START_DESCRIBE RHEL-07-020220
-  describe file('') do
-    it { should match // }
+  describe service('ctrl-alt-del') do
+    it { should_not be_enabled }
+    it { should_not be_running }
   end
 # STOP_DESCRIBE RHEL-07-020220
 

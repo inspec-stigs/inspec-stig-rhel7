@@ -28,8 +28,11 @@ Check the group owner of the “cron.allow” file with the following command:
 If the “cron.allow” file exists and has a group owner other than root, this is a finding.'
 
 # START_DESCRIBE RHEL-07-021200
-  describe file('') do
-    it { should match // }
+  cron_allow_exists = file('/etc/cron.allow').file?
+  if cron_allow_exists
+    describe file('/etc/cron.allow') do
+      it { should be_grouped_into 'root' }
+    end
   end
 # STOP_DESCRIBE RHEL-07-021200
 
