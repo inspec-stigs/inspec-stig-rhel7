@@ -4,6 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+audit_key_name = attribute('RHEL_07_030710_audit_key_name', default: 'audit_rules_usergroup_modification', description: 'Key name for the  audit rule')
 title 'RHEL-07-030710 - The operating system must generate audit records for all account creations, modifications, disabling, and termination events.'
 control 'RHEL-07-030710' do
   impact 0.5
@@ -61,10 +62,9 @@ If the command does not return the following output, this is a finding.
 # START_DESCRIBE RHEL-07-030710
   ['/etc/group', '/etc/passwd', '/etc/gshadow', '/etc/shadow', '/etc/security/opasswd'].each do |file|
     describe auditd_rules do
-      its('lines') { should include("-w #{file} -p wa -k audit_rules_usergroup_modification") }
+      its('lines') { should include("-w #{file} -p wa -k #{audit_key_name}") }
     end
   end
 # STOP_DESCRIBE RHEL-07-030710
 
 end
-
