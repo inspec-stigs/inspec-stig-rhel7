@@ -4,6 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+audit_key_name = attribute('RHEL_07_030523_audit_key_name', default: 'audit_rules_usergroup_modification', description: 'Key name for the  audit rule')
 title 'RHEL-07-030523 - The operating system must generate audit records containing the full-text recording of modifications to sudo configuration files.'
 control 'RHEL-07-030523' do
   impact 0.5
@@ -15,16 +16,16 @@ control 'RHEL-07-030523' do
   tag fixid: 'F-RHEL-07-030523_fix'
   tag version: 'RHEL-07-030523'
   tag ruleid: 'RHEL-07-030523_rule'
-  tag fixtext: 'Configure the operating system to generate audit records containing the full-text recording of modifications to sudo configuration files. 
+  tag fixtext: 'Configure the operating system to generate audit records containing the full-text recording of modifications to sudo configuration files.
 
-Add or update the following rule in /etc/audit/rules.d/audit.rules: 
+Add or update the following rule in /etc/audit/rules.d/audit.rules:
 
 -w /etc/sudoers -p wa -k privileged-actions
 
 -w /etc/sudoers.d/ -p wa -k privileged-actions'
-  tag checktext: 'Verify the operating system generates audit records containing the full-text recording of modifications to sudo configuration files. 
+  tag checktext: 'Verify the operating system generates audit records containing the full-text recording of modifications to sudo configuration files.
 
-Check for modification of the following files being audited by performing the following commands to check the file system rules in /etc/audit/rules.d/audit.rules: 
+Check for modification of the following files being audited by performing the following commands to check the file system rules in /etc/audit/rules.d/audit.rules:
 
 # grep -i /etc/sudoers /etc/audit/rules.d/audit.rules
 
@@ -37,13 +38,14 @@ Check for modification of the following files being audited by performing the fo
 If the command does not return output that does not match the examples, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030523
-  describe command('auditctl -l') do
-    its('stdout') { should match /-w \/etc\/sudoers -p wa -k privileged-actions/ }
+  describe auditd_rules do
+    its('lines') { should include ("-w \/etc\/sudoers -p wa -k #{audit_key_name}") }
   end
 
-  describe command('auditctl -l') do
-    its('stdout') { should match /-w \/etc\/sudoers.d\/? -p wa -k privileged-actions/ }
+  describe auditd_rules do
+    its('lines') { should include ("-w \/etc\/sudoers.d -p wa -k #{audit_key_name}") }
   end
 # STOP_DESCRIBE RHEL-07-030523
 
 end
+

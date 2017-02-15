@@ -4,6 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+audit_key_name = attribute('RHEL_07_030490_audit_key_name', default: 'logins', description: 'Key name for the  audit rule')
 title 'RHEL-07-030490 - The operating system must generate audit records for all successful/unsuccessful account access count events.'
 control 'RHEL-07-030490' do
   impact 0.5
@@ -17,14 +18,14 @@ control 'RHEL-07-030490' do
   tag ruleid: 'RHEL-07-030490_rule'
   tag fixtext: 'Configure the operating system to generate audit records when successful/unsuccessful account access count events occur.
 
-Add or update the following rule in /etc/audit/rules.d/audit.rules: 
+Add or update the following rule in /etc/audit/rules.d/audit.rules:
 
 -w /var/log/tallylog -p wa -k logins
 
 The audit daemon must be restarted for the changes to take effect.'
-  tag checktext: 'Verify the operating system generates audit records when successful/unsuccessful account access count events occur. 
+  tag checktext: 'Verify the operating system generates audit records when successful/unsuccessful account access count events occur.
 
-Check the file system rule in /etc/audit/rules.d/audit.rules with the following commands: 
+Check the file system rule in /etc/audit/rules.d/audit.rules with the following commands:
 
 # grep -i /var/log/tallylog etc/audit/audit.rules
 
@@ -34,7 +35,7 @@ If the command does not return any output, this is a finding.'
 
 # START_DESCRIBE RHEL-07-030490
   describe auditd_rules do
-    its('lines') { should include('-w /var/log/tallylog -p wa -k logins') }
+    its('lines') { should include('-w /var/log/tallylog -p wa -k #{audit_key_name}') }
   end
 # STOP_DESCRIBE RHEL-07-030490
 
