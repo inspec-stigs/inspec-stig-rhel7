@@ -4,7 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
-timeout_value = attribute('client_alive_interval', default: '600', description: 'value for the ClientAliveInterval')
+timeout_value = attribute('client_alive_interval', default: 600, description: 'value for the ClientAliveInterval')
 
 title 'RHEL-07-040190 - All network connections associated with SSH traffic must terminate at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements.'
 control 'RHEL-07-040190' do
@@ -34,7 +34,7 @@ If “ClientAliveInterval” is not set to “600” in /etc/ssh/sshd_config, an
 
 # START_DESCRIBE RHEL-07-040190
   describe sshd_config do
-    its('ClientAliveInterval') { should eq timeout_value }
+    its('ClientAliveInterval') { should cmp timeout_value }
   end
 # STOP_DESCRIBE RHEL-07-040190
 
