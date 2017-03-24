@@ -35,7 +35,7 @@ If the “PASS_MAX_DAYS” parameter value is not 60 or less, or is commented ou
   }
   describe parse_config_file('/etc/login.defs', options) do
     its('PASS_MAX_DAYS') { should_not eq nil }
-    its('PASS_MAX_DAYS') { should_not match /[6-9][1-9]|[7-9][0-9]/ }
+    its('PASS_MAX_DAYS') { should be <= "60" }
   end
 # STOP_DESCRIBE RHEL-07-010220
 
