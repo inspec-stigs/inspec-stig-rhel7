@@ -4,6 +4,7 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+max_days = attribute('pass_max_days', default: '60', description: 'variable for pass_max_days in login.defs')
 title 'RHEL-07-010220 - Passwords for new users must be restricted to a 60-day maximum lifetime.'
 control 'RHEL-07-010220' do
   impact 0.5
@@ -35,7 +36,7 @@ If the “PASS_MAX_DAYS” parameter value is not 60 or less, or is commented ou
   }
   describe parse_config_file('/etc/login.defs', options) do
     its('PASS_MAX_DAYS') { should_not eq nil }
-    its('PASS_MAX_DAYS') { should_not match /[6-9][1-9]|[7-9][0-9]/ }
+    its('PASS_MAX_DAYS') { should be <= "#{max_days}" }
   end
 # STOP_DESCRIBE RHEL-07-010220
 
