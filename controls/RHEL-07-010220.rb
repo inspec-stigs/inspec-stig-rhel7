@@ -31,7 +31,7 @@ If the “PASS_MAX_DAYS” parameter value is not 60 or less, or is commented ou
 
 # START_DESCRIBE RHEL-07-010220
   options = {
-    assignment_re: /^(\w+)\s+(\w+?)$/
+    assignment_regex: /^(\w+)\s+(\w+?)$/
   }
   describe parse_config_file('/etc/login.defs', options) do
     its('PASS_MAX_DAYS') { should_not eq nil }

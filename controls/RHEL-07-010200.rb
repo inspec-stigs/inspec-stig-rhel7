@@ -31,7 +31,7 @@ If the “PASS_MIN_DAYS” parameter value is not “1” or greater, or is comm
 
 # START_DESCRIBE RHEL-07-010200
   options = {
-    assignment_re: /^(\w+)\s+(\w+?)$/
+    assignment_regex: /^(\w+)\s+(\w+?)$/
   }
   describe parse_config_file('/etc/login.defs', options) do
     its('PASS_MIN_DAYS') { should match /[1-9]|[0-9][1-9]/ }
