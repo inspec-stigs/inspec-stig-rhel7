@@ -4,6 +4,10 @@
 # date: 2016-01-14
 # description: This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil.
 # impacts
+only_if do
+  package('gnome-desktop3').installed?
+end
+
 title 'RHEL-07-010071 - The operating system must initiate a session lock after a 15-minute period of inactivity for all connection types.'
 control 'RHEL-07-010071' do
   impact 0.5
@@ -44,12 +48,8 @@ If the command does not return a result for the screensaver and session keywords
 If the command does not return a result, this is a finding.'
 
 # START_DESCRIBE RHEL-07-010071
-  if package('gnome-desktop3').installed?
-    describe command('grep -i lock-delay /etc/dconf/db/local.d/locks/*') do
-      its('stdout') { should_not be "" }
-    end
+  describe command('grep -i lock-delay /etc/dconf/db/local.d/locks/*') do
+    its('stdout') { should_not be "" }
   end
-# STOP_DESCRIBE RHEL-07-010071
-
 end
-
+# STOP_DESCRIBE RHEL-07-010071
